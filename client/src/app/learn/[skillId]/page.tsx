@@ -214,10 +214,10 @@ const skillQuestions: Record<string, SkillData> = {
         type: 'multiple_choice',
         topics: ['Recognising coins/notes', 'Counting Simple Amounts'],
         options: ['$49.80', '$57.80', "$530.80", '$53.80'],
-        correct: 2,
-        explanation: 'There are four 10 dollar notes, four 2 dollar notes, one 1 dollar coin, \
+        correct: 3,
+        explanation: 'There are four 10 dollar notes, six 2 dollar notes, one 1 dollar coin, \
         three 20 cent coins and two 10 cent coins. In total it will be 4 x $10 + 6 x $2 + $1 + \
-        3 x $0.20 + 2 x $0.10 = $41.80.',
+        3 x $0.20 + 2 x $0.10 = $53.80.',
         difficulty: 'medium',
         image: '/images/math-money-2-q5.png'
       },
@@ -230,7 +230,8 @@ const skillQuestions: Record<string, SkillData> = {
         correct: 3,
         explanation: 'There are two 10 dollar notes, three 5 dollar notes, two 2 dollar notes, \
         two 1 dollar coins, two 20 cent coins, two 10 cent coins and one 5 cent coin. Together, \
-        they will total to be 2 x $10 + 3 x $5 + 2 x $2 + 2 x $1 + 2 x $0.20 + 2 x $0.10 + 1 x $0.05 = $41.85.',
+        they will total to be 2 x $10 + 3 x $5 + 2 x $2 + 2 x $1 + 2 x $0.20 + 2 x $0.10 + 1 x $0.05 \
+        = $41.85. Then you can convert $41.85 to 4185¢.',
         difficulty: 'hard',
         image: '/images/math-money-2-q6.png'
       },
@@ -633,7 +634,7 @@ const snapshot = { ...currentQuestion };
             <img
             src={(answeredQuestion ?? currentQuestion).image}
             alt="Coin shown"
-            className="h-24 object-contain"
+            className="h-85 object-contain"
             />
             </div>
             )}
