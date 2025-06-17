@@ -629,9 +629,14 @@ export default function DashboardPage() {
       <div className="max-w-7xl mx-auto p-6">
         {/* Header with Role Switcher */}
         <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-black">Learning Platform</h1>
-            <p className="text-black">AI-Powered Adaptive Learning System with Advanced Analytics</p>
+          <div className="space-y-2">
+            <div className="flex items-center space-x-4">
+              <img src="/images/lifehack.png" alt="Study Pal Logo" className="w-10 h-10" />
+              <h1 className="text-3xl font-bold text-black">Study Pal</h1>
+            </div>
+            <p className="text-black">
+              AI-Powered Adaptive Learning System with Advanced Analytics
+            </p>
           </div>
           
           <div className="flex items-center space-x-4">
