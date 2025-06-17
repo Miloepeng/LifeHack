@@ -90,9 +90,9 @@ const mockLearningData = {
   ] as Achievement[],
 
   skillProgress: [
-    { skillId: 'js-fundamentals', name: 'JavaScript Fundamentals', currentLevel: 3, masteryPercentage: 67, questionsAnswered: 23, averageAccuracy: 87, timeSpent: 145, streak: 3, lastStudied: '2024-01-15', difficulty: 'beginner', trend: 'improving' },
-    { skillId: 'react-components', name: 'React Components', currentLevel: 2, masteryPercentage: 45, questionsAnswered: 15, averageAccuracy: 82, timeSpent: 98, streak: 2, lastStudied: '2024-01-14', difficulty: 'intermediate', trend: 'improving' },
-    { skillId: 'css-flexbox', name: 'CSS Flexbox', currentLevel: 1, masteryPercentage: 23, questionsAnswered: 8, averageAccuracy: 75, timeSpent: 67, streak: 1, lastStudied: '2024-01-13', difficulty: 'beginner', trend: 'stable' }
+    { skillId: 'math-money-1', name: 'Math: Money 1', currentLevel: 3, masteryPercentage: 67, questionsAnswered: 23, averageAccuracy: 87, timeSpent: 145, streak: 3, lastStudied: '2024-01-15', difficulty: 'beginner', trend: 'improving' },
+    { skillId: 'math-money-2', name: 'Math: Money 2', currentLevel: 2, masteryPercentage: 45, questionsAnswered: 15, averageAccuracy: 82, timeSpent: 98, streak: 2, lastStudied: '2024-01-14', difficulty: 'intermediate', trend: 'improving' },
+    { skillId: 'math-money-3', name: 'Math: Money 3', currentLevel: 1, masteryPercentage: 23, questionsAnswered: 8, averageAccuracy: 75, timeSpent: 67, streak: 1, lastStudied: '2024-01-13', difficulty: 'beginner', trend: 'stable' }
   ] as SkillProgress[]
 }
 
