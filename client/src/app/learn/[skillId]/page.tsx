@@ -83,6 +83,7 @@ interface SkillData {
     id: number
     question: string
     type: 'multiple_choice' | 'true_false'
+    topics: string[]
     options: string[]
     correct: number
     explanation: string
@@ -91,112 +92,202 @@ interface SkillData {
 }
 
 const skillQuestions: Record<string, SkillData> = {
-  'js-fundamentals': {
-    name: 'JavaScript Fundamentals',
-    description: 'Learn the basics of JavaScript programming',
+  'math-money-1': {
+    name: 'Math: Money 1',
+    description: 'Before getting started on money, we would have to learn the decimal notation, read and write in decimal!',
     questions: [
       {
         id: 1,
-        question: 'What is the result of 5 + "5" in JavaScript?',
+        question: 'Which of the following is a decimal number?',
         type: 'multiple_choice',
-        options: ['10', '55', 'Error', 'NaN'],
-        correct: 1,
-        explanation: 'In JavaScript, when you add a number and a string, the number is converted to a string and concatenated.',
+        topics: ['Read and write in decimal', 'Decimal Notation'],
+        options: ['3', '0', '120', '1.2'],
+        correct: 3,
+        explanation: 'Decimal numbers are numbers that have a dot (we call them a decimal point) in them.',
         difficulty: 'easy'
       },
       {
         id: 2,
-        question: 'Which keyword is used to declare a variable in JavaScript?',
+        question: 'Which of the following is a decimal number?',
         type: 'multiple_choice',
-        options: ['var', 'let', 'const', 'All of the above'],
-        correct: 3,
-        explanation: 'JavaScript has three ways to declare variables: var (function-scoped), let (block-scoped), and const (block-scoped, immutable).',
+        topics: ['Read and write in decimal', 'Decimal Notation'],
+        options: ['7', '7.0', '23', '230'],
+        correct: 1,
+        explanation: 'Decimal numbers are numbers that have a dot (we call them a decimal point) in them.',
         difficulty: 'easy'
       },
       {
         id: 3,
-        question: 'Is JavaScript case-sensitive?',
+        question: 'Which of these are forty-four point thirty-one?',
         type: 'true_false',
-        options: ['True', 'False'],
+        topics: ['Read and write in decimal', 'Decimal Notation'],
+        options: ['44.31', '443.1', '4431', '4.431'],
         correct: 0,
-        explanation: 'JavaScript is case-sensitive. Variables like "myVar" and "myvar" are different.',
+        explanation: 'Forty-four is 44, the point represents the decimal point and thirty-one is 31.',
         difficulty: 'easy'
       },
       {
         id: 4,
-        question: 'What does "typeof null" return in JavaScript?',
-        type: 'multiple_choice',
-        options: ['null', 'undefined', 'object', 'boolean'],
-        correct: 2,
-        explanation: 'This is a well-known JavaScript quirk. "typeof null" returns "object" due to a legacy bug in the language.',
+        question: '0.3 is bigger than 0.5. True or False?',
+        type: 'true_false',
+        topics: ['Decimal Notation'],
+        options: ['True', 'False'],
+        correct: 1,
+        explanation: '0.5 is bigger than 0.3, if you have 0.5 of a pizza, you have half the pizza. If you have 0.3 of a pizza, you would have a third of the pizza.',
         difficulty: 'medium'
       },
       {
         id: 5,
-        question: 'Which method is used to add an element to the end of an array?',
-        type: 'multiple_choice',
-        options: ['push()', 'pop()', 'shift()', 'unshift()'],
+        question: '0.45 is smaller than 0.54',
+        type: 'true_false',
+        topics: ['Decimal Notation'],
+        options: ['True', 'False'],
         correct: 0,
-        explanation: 'The push() method adds one or more elements to the end of an array and returns the new length.',
+        explanation: 'If we have a cake of 100 slices, 0.45 means you get 45 slices and 0.54 means you get 54 slices. 45 slices of cake is less than 54 slices of cake.',
         difficulty: 'medium'
-      }
+      },
+      {
+        id: 6,
+        question: '1.5 - 0.7 = ?',
+        type: 'multiple_choice',
+        topics: ['Decimal Notation'],
+        options: ['2.4', '0.8', '0.7', '0.75'],
+        correct: 1,
+        explanation: '1.5 - 0.7 = 0.8',
+        difficulty: 'hard'
+      },
     ]
   },
-  'react-components': {
-    name: 'React Components',
-    description: 'Understanding React component lifecycle and patterns',
+  'math-money-2': {
+    name: 'Math: Money 2',
+    description: 'Learn recognise coins and notes, and count them!',
     questions: [
       {
         id: 1,
-        question: 'What is JSX?',
+        question: 'What is the coin below?',
         type: 'multiple_choice',
-        options: ['JavaScript XML', 'Java Syntax Extension', 'JSON Extended', 'JavaScript Extension'],
-        correct: 0,
-        explanation: 'JSX stands for JavaScript XML. It allows you to write HTML-like syntax in JavaScript.',
+        topics: ['Recognising coins/notes'],
+        options: ['10 cent coin', '20 cent coin', '30 cent coin', '50 cent coin'],
+        correct: 1,
+        explanation: 'It is a 20 cents coin! You can tell by the number 20 on the coin.',
         difficulty: 'easy'
       },
       {
         id: 2,
-        question: 'Which hook is used for state management in functional components?',
+        question: 'What is below?',
         type: 'multiple_choice',
-        options: ['useEffect', 'useState', 'useContext', 'useReducer'],
-        correct: 1,
-        explanation: 'useState is the primary hook for managing state in functional React components.',
-        difficulty: 'medium'
+        topics: ['Recognising coins/notes'],
+        options: ['50 cent coin', '2 dollar note', '1 dollar coin', '10 dollar note'],
+        correct: 3,
+        explanation: 'You can tell that it is a 10 dollar note as it is a rectangle and there is a 10 on it!',
+        difficulty: 'easy'
       },
       {
         id: 3,
-        question: 'React components must return a single parent element.',
-        type: 'true_false',
-        options: ['True', 'False'],
-        correct: 1,
-        explanation: 'False. React components can return multiple elements using React.Fragment or <> </> syntax.',
-        difficulty: 'hard'
-      }
-    ]
-  },
-  'css-flexbox': {
-    name: 'CSS Flexbox',
-    description: 'Modern CSS layout techniques with Flexbox',
-    questions: [
-      {
-        id: 1,
-        question: 'What does "flex: 1" mean in CSS Flexbox?',
+        question: 'How much is $3 in cents?',
         type: 'multiple_choice',
-        options: ['Fixed width of 1px', 'Grow to fill available space', 'Minimum width of 1', 'Maximum of 1 item'],
-        correct: 1,
-        explanation: 'flex: 1 is shorthand for flex-grow: 1, which makes the item grow to fill available space.',
+        topics: ['Counting Simple Amounts'],
+        options: ['30¢', '3¢', '300¢', '3000¢'],
+        correct: 2,
+        explanation: '1 dollar is made out of 100 cents. So if we have 3 dollars, it is made out of 3 x 100 cents which is 300 cents',
+        difficulty: 'easy'
+      },
+      {
+        id: 4,
+        question: 'How much is shown below?',
+        type: 'multiple_choice',
+        topics: ['Recognising coins/notes', 'Counting Simple Amounts'],
+        options: ['$1.10', '$1.40', '$0.60', '$0.50'],
+        correct: 0,
+        explanation: 'There are x number of 10 cent coins, x number of 20 cent coins, x number of 50 cent coinss, x number of $1 coins...',
+        difficulty: 'easy'
+      },
+      {
+        id: 5,
+        question: 'How much is shown below?',
+        type: 'multiple_choice',
+        topics: ['Recognising coins/notes', 'Counting Simple Amounts'],
+        options: ['$12', '$2.40', "$2.60", '$4.70'],
+        correct: 2,
+        explanation: 'There are x number of 10 cent coins, x number of 50 cent coins, x number of 2 dollar notes, x number of 5 dollar notes...',
         difficulty: 'medium'
       },
       {
-        id: 2,
-        question: 'Is "display: flex" applied to the container or items?',
+        id: 6,
+        question: 'How much is shown below? Answer in cents.',
         type: 'multiple_choice',
-        options: ['Container', 'Items', 'Both', 'Neither'],
-        correct: 0,
-        explanation: 'display: flex is applied to the parent container to create a flex layout for its children.',
+        topics: ['Recognising coins/notes', 'Counting Simple Amounts'],
+        options: ['540¢', '5400¢', '440¢', '4400¢'],
+        correct: 3,
+        explanation: 'There are ...',
+        difficulty: 'hard'
+      },
+    ]
+  },
+  'math-money 3': {
+    name: 'Math: Money 3',
+    description: 'Now that you are so capable at counting money, lets compare multiple amounts and see some real world examples!',
+    questions: [
+      {
+        id: 1,
+        question: 'If Alex has $3.00 and each curry puff costs $1.00, how many curry puffs can Alex buy?',
+        type: 'multiple_choice',
+        topics: ['Problem Solving', 'Comparing multiple amounts', 'Real World Context'],
+        options: ['2', '3', '4', '5'],
+        correct: 1,
+        explanation: 'Each curry puff costs $1.00. If Alex has three $1 coins, he can give one coin for one curry puff, in total giving him 3 curry puffs.',
         difficulty: 'easy'
-      }
+      },
+      {
+        id: 2,
+        question: 'A highlighter costs $2.20. An eraser costs $0.45. What is the total cost of a highlighter and an eraser?',
+        type: 'multiple_choice',
+        topics: ['Comparing multiple amounts', 'Real World Context'],
+        options: ['$2.55', '$2.60', '$2.65', '$2.70'],
+        correct: 2,
+        explanation: 'For one highlighter and one eraser, it will cost $2.20 + $0.45 = $2.65',
+        difficulty: 'easy'
+      },
+      {
+        id: 3,
+        question: '$3.40 + $2.20 + ? = $10',
+        type: 'multiple_choice',
+        topics: ['Problem Solving', 'Comparing multiple amounts'],
+        options: ['$4.40', '$3.40', '$5.40', '$6.40'],
+        correct: 0,
+        explanation: '$3.40 + $2.20 is $5.60. ? is an amount of money that when added to $5.60 makes $10. So $10 - $5.60 = $4.40',
+        difficulty: 'medium'
+      },
+      {
+        id: 4,
+        question: 'Ted saved $124 each month. Tom saved 3 times as much as John each month. How much would Tom save in 6 months?',
+        type: 'multiple_choice',
+        topics: ['Problem Solving', 'Comparing multiple amounts', 'Real World Context'],
+        options: ['$264', '$372', '$2232', '$2976'],
+        correct: 2,
+        explanation: 'Tom saves 3 x $124 = $372 each month. In 6 months, he will save $372 x 6 = $2232',
+        difficulty: 'hard'
+      },
+      {
+        id: 5,
+        question: 'At the bookshop, erasers were sold for 65¢ each. Jason had 4 two-dollar notes in her wallet. How much money would Jason have left after buying 10 such erasers?',
+        type: 'multiple_choice',
+        topics: ['Problem Solving', 'Comparing multiple amounts', 'Real World Context'],
+        options: ['$1.00', '$2.00', '$1.50', '$2.50'],
+        correct: 2,
+        explanation: 'Jason has 4 x $2 = $8. Jason bought 10 erasers, which costs him 10 x 65¢ = $6.50. Hence he will have $8 - $6.50 = $1.50 left.',
+        difficulty: 'hard'
+      },
+      {
+        id: 6,
+        question: 'Timmy wants to buy the new Lego City set which costs $210.45. Timmy only has three 50-dollar notes, four 10-dollar notes and eight 20-cent coins. How much more does Timmy need to buy the Lego City set?',
+        type: 'multiple_choice',
+        topics: ['Problem Solving', 'Comparing multiple amounts', 'Real World Context'],
+        options: ['$14.55', '$14.85', '$18.55', '$18.85'],
+        correct: 0,
+        explanation: 'Timmy has 3 x $50 + 4 x $10 + 6 x $0.20 = $191.60. To buy the Lego City set, he would need $210.45 - $191.60 = $18.85',
+        difficulty: 'hard'
+      },
     ]
   }
 }
