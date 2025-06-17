@@ -230,62 +230,62 @@ const skillQuestions: Record<string, SkillData> = {
     questions: [
       {
         id: 1,
-        question: '',
+        question: 'If Alex has $3.00 and each curry puff costs $1.00, how many curry puffs can Alex buy?',
         type: 'multiple_choice',
-        topics: [],
-        options: [],
-        correct: 3,
-        explanation: '',
+        topics: ['Problem Solving', 'Comparing multiple amounts', 'Real World Context'],
+        options: ['2', '3', '4', '5'],
+        correct: 1,
+        explanation: 'Each curry puff costs $1.00. If Alex has three $1 coins, he can give one coin for one curry puff, in total giving him 3 curry puffs.',
         difficulty: 'easy'
       },
       {
         id: 2,
-        question: '',
+        question: 'A highlighter costs $2.20. An eraser costs $0.45. What is the total cost of a highlighter and an eraser?',
         type: 'multiple_choice',
-        topics: [],
-        options: [],
-        correct: 0,
-        explanation: '',
+        topics: ['Comparing multiple amounts', 'Real World Context'],
+        options: ['$2.55', '$2.60', '$2.65', '$2.70'],
+        correct: 2,
+        explanation: 'For one highlighter and one eraser, it will cost $2.20 + $0.45 = $2.65',
         difficulty: 'easy'
       },
       {
         id: 3,
-        question: '',
+        question: '$3.40 + $2.20 + ? = $10',
         type: 'multiple_choice',
-        topics: [],
-        options: [],
+        topics: ['Problem Solving', 'Comparing multiple amounts'],
+        options: ['$4.40', '$3.40', '$5.40', '$6.40'],
         correct: 0,
-        explanation: '',
-        difficulty: 'easy'
+        explanation: '$3.40 + $2.20 is $5.60. ? is an amount of money that when added to $5.60 makes $10. So $10 - $5.60 = $4.40',
+        difficulty: 'medium'
       },
       {
         id: 4,
-        question: '',
+        question: 'Ted saved $124 each month. Tom saved 3 times as much as John each month. How much would Tom save in 6 months?',
         type: 'multiple_choice',
-        topics: [],
-        options: [],
-        correct: 0,
-        explanation: '',
-        difficulty: 'medium'
+        topics: ['Problem Solving', 'Comparing multiple amounts', 'Real World Context'],
+        options: ['$264', '$372', '$2232', '$2976'],
+        correct: 2,
+        explanation: 'Tom saves 3 x $124 = $372 each month. In 6 months, he will save $372 x 6 = $2232',
+        difficulty: 'hard'
       },
       {
         id: 5,
-        question: '',
+        question: 'At the bookshop, erasers were sold for 65¢ each. Jason had 4 two-dollar notes in her wallet. How much money would Jason have left after buying 10 such erasers?',
         type: 'multiple_choice',
-        topics: [],
-        options: [],
-        correct: 0,
-        explanation: '',
-        difficulty: 'medium'
+        topics: ['Problem Solving', 'Comparing multiple amounts', 'Real World Context'],
+        options: ['$1.00', '$2.00', '$1.50', '$2.50'],
+        correct: 2,
+        explanation: 'Jason has 4 x $2 = $8. Jason bought 10 erasers, which costs him 10 x 65¢ = $6.50. Hence he will have $8 - $6.50 = $1.50 left.',
+        difficulty: 'hard'
       },
       {
         id: 6,
-        question: '',
+        question: 'Timmy wants to buy the new Lego City set which costs $210.45. Timmy only has three 50-dollar notes, four 10-dollar notes and eight 20-cent coins. How much more does Timmy need to buy the Lego City set?',
         type: 'multiple_choice',
-        topics: [],
-        options: [],
+        topics: ['Problem Solving', 'Comparing multiple amounts', 'Real World Context'],
+        options: ['$14.55', '$14.85', '$18.55', '$18.85'],
         correct: 0,
-        explanation: '',
+        explanation: 'Timmy has 3 x $50 + 4 x $10 + 6 x $0.20 = $191.60. To buy the Lego City set, he would need $210.45 - $191.60 = $18.85',
         difficulty: 'hard'
       },
     ]
