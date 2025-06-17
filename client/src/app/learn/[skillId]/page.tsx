@@ -172,7 +172,7 @@ const skillQuestions: Record<string, SkillData> = {
         correct: 1,
         explanation: 'It is a 20 cents coin! You can tell by the number 20 on the coin.',
         difficulty: 'easy',
-        image: ''
+        image: 'client\public\images\math-money-2-q1.png'
       },
       {
         id: 2,
@@ -183,7 +183,7 @@ const skillQuestions: Record<string, SkillData> = {
         correct: 3,
         explanation: 'You can tell that it is a 10 dollar note as it is a rectangle and there is a 10 on it!',
         difficulty: 'easy',
-        image: ''
+        image: 'client\public\images\math-money-2-q2.png'
       },
       {
         id: 3,
@@ -192,15 +192,9 @@ const skillQuestions: Record<string, SkillData> = {
         topics: ['Counting Simple Amounts'],
         options: ['30¢', '3¢', '300¢', '3000¢'],
         correct: 2,
-<<<<<<< HEAD
-        explanation: '1 dollar is made out of 100 cents. So if we have 3 dollars, it is made out of 3 x 100 cents which is 300 cents',
-        difficulty: 'easy',
-        image: ''
-=======
         explanation: '1 dollar is made out of 100 cents. So if we have 3 dollars, \
           it is made out of 3 x 100 cents which is 300 cents.',
         difficulty: 'easy'
->>>>>>> 1269173a04c167ae50d3f1d32b9521e8e00f8357
       },
       {
         id: 4,
@@ -209,35 +203,21 @@ const skillQuestions: Record<string, SkillData> = {
         topics: ['Recognising coins/notes', 'Counting Simple Amounts'],
         options: ['$1.30', '$1.40', '$1.10', '$0.90'],
         correct: 0,
-<<<<<<< HEAD
-        explanation: 'There are x number of 10 cent coins, x number of 20 cent coins, x number of 50 cent coinss, x number of $1 coins...',
-        difficulty: 'easy',
-        image: ''
-=======
         explanation: 'There is one 50 cent coin, two 20 cent coins and four 10 cent coins. \
           In total it will be $0.50 + 2 x $0.20 + 4 x $0.10 = $1.30.',
-        difficulty: 'easy'
->>>>>>> 1269173a04c167ae50d3f1d32b9521e8e00f8357
+        difficulty: 'easy',
+        image: 'client\public\images\math-money-2-q4.png'
       },
       {
         id: 5,
         question: 'How much is shown below?',
         type: 'multiple_choice',
         topics: ['Recognising coins/notes', 'Counting Simple Amounts'],
-<<<<<<< HEAD
         options: ['$12', '$2.40', "$2.60", '$4.70'],
         correct: 2,
         explanation: 'There are x number of 10 cent coins, x number of 50 cent coins, x number of 2 dollar notes, x number of 5 dollar notes...',
         difficulty: 'medium',
-        image: ''
-=======
-        options: ['$49.80', '$57.80', "$530.80", '$53.80'],
-        correct: 3,
-        explanation: 'There are four 10 dollar notes, four 2 dollar notes, one 1 dollar coin, \
-          three 20 cent coins and two 10 cent coins. In total it will be 4 x $10 + 6 x $2 + $1 + \
-          3 x $0.20 + 2 x $0.10 = $41.80.',
-        difficulty: 'medium'
->>>>>>> 1269173a04c167ae50d3f1d32b9521e8e00f8357
+        image: 'client\public\images\math-money-2-q5.png'
       },
       {
         id: 6,
@@ -246,16 +226,9 @@ const skillQuestions: Record<string, SkillData> = {
         topics: ['Recognising coins/notes', 'Counting Simple Amounts'],
         options: ['45.45¢', '4545¢', '41.85¢', '4185¢'],
         correct: 3,
-<<<<<<< HEAD
         explanation: 'There are ...',
         difficulty: 'hard',
-        image: ''
-=======
-        explanation: 'There are two 10 dollar notes, three 5 dollar notes, two 2 dollar notes, \
-          two 1 dollar coins, two 20 cent coins, two 10 cent coins and one 5 cent coin. Together, \
-          they will total to be 2 x $10 + 3 x $5 + 2 x $2 + 2 x $1 + 2 x $0.20 + 2 x $0.10 + 1 x $0.05 = $41.85.',
-        difficulty: 'hard'
->>>>>>> 1269173a04c167ae50d3f1d32b9521e8e00f8357
+        image: 'client\public\images\math-money-2-q6.png'
       },
       {
         id: 7,
