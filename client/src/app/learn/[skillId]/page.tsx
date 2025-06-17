@@ -452,7 +452,7 @@ const snapshot = { ...currentQuestion };
     return { text: 'Keep Practicing!', variant: 'outline' as const, icon: Brain }
   }
 
-  if (isComplete || bktEngine.isMastered(masteryLevel)) {
+  if (isComplete || (bktEngine.isMastered(masteryLevel) && answeredQuestions.length >= 5)) {
     const totalTime = Math.round((Date.now() - timeStarted) / 1000)
     const percentage = answeredQuestions.length > 0 ? (score / answeredQuestions.length) * 100 : 0
     const scoreBadge = getScoreBadge()
