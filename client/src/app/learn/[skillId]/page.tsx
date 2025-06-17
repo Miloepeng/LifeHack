@@ -215,6 +215,8 @@ export default function LearnSkillPage() {
   const [masteryLevel, setMasteryLevel] = useState(0.1) // BKT mastery tracking
   const [answeredQuestions, setAnsweredQuestions] = useState<number[]>([])
   const [bktEngine] = useState(new SimpleBKT())
+  const [answeredQuestion, setAnsweredQuestion] = useState<typeof currentQuestion | null>(null)
+
 
   const adaptiveMode = true
 
@@ -259,7 +261,11 @@ export default function LearnSkillPage() {
 
   const handleSubmitAnswer = () => {
     if (selectedAnswer === null) return
-    
+    const snapshot = { ...currentQuestion }
+    console.log('📌 Submitted:', currentQuestionIndex, currentQuestion)
+    console.log('📌 Snapshot stored as answeredQuestion:', snapshot)
+    setAnsweredQuestion(snapshot)
+    setShowResult(true)
     const isCorrect = selectedAnswer === currentQuestion.correct
     if (isCorrect) {
       setScore(score + 1)
@@ -283,6 +289,7 @@ export default function LearnSkillPage() {
         setCurrentQuestionIndex(nextQuestion)
         setSelectedAnswer(null)
         setShowResult(false)
+        setAnsweredQuestion(null)
       } else {
         setIsComplete(true)
       }
@@ -292,6 +299,7 @@ export default function LearnSkillPage() {
         setCurrentQuestionIndex(currentQuestionIndex + 1)
         setSelectedAnswer(null)
         setShowResult(false)
+        setAnsweredQuestion(null)
       } else {
         setIsComplete(true)
       }
@@ -474,13 +482,13 @@ export default function LearnSkillPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-xl text-black">
-                    {currentQuestion.question}
+                    {(answeredQuestion ?? currentQuestion).question}
                   </CardTitle>
                   <Badge variant="outline" className="ml-2">
-                    {currentQuestion.difficulty}
+                    {(answeredQuestion ?? currentQuestion).difficulty}
                   </Badge>
                 </div>
-            {currentQuestion.type === 'true_false' && (
+            {(answeredQuestion ?? currentQuestion).type === 'true_false' && (
               <CardDescription className="text-black">
                 Select True or False
               </CardDescription>
@@ -493,7 +501,7 @@ export default function LearnSkillPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-3">
-              {currentQuestion.options.map((option: string, index: number) => (
+              {(answeredQuestion ?? currentQuestion).options.map((option: string, index: number) => (
                 <button
                   key={index}
                   onClick={() => handleAnswerSelect(index)}
@@ -501,11 +509,11 @@ export default function LearnSkillPage() {
                   className={`w-full p-4 text-left rounded-lg border-2 transition-all duration-200 ${
                     selectedAnswer === index
                       ? showResult
-                        ? index === currentQuestion.correct
+                        ? index === answeredQuestion?.correct
                           ? 'border-green-500 bg-green-50 text-green-800'
                           : 'border-red-500 bg-red-50 text-red-800'
                         : 'border-blue-500 bg-blue-50 text-blue-800'
-                      : showResult && index === currentQuestion.correct
+                      : showResult && index === answeredQuestion?.correct
                         ? 'border-green-500 bg-green-50 text-green-800'
                         : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100 text-black'
                   }`}
@@ -514,10 +522,10 @@ export default function LearnSkillPage() {
                     <span className="font-medium">{option}</span>
                     {showResult && (
                       <>
-                        {index === currentQuestion.correct && (
+                        {index === answeredQuestion?.correct && (
                           <CheckCircle className="h-5 w-5 text-green-600" />
                         )}
-                        {selectedAnswer === index && index !== currentQuestion.correct && (
+                        {selectedAnswer === index && index !== answeredQuestion?.correct && (
                           <XCircle className="h-5 w-5 text-red-600" />
                         )}
                       </>
@@ -528,14 +536,15 @@ export default function LearnSkillPage() {
             </div>
 
             {showResult && (
+              
               <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <div className="flex items-start space-x-2">
                   <Lightbulb className="h-5 w-5 text-blue-600 mt-0.5" />
                   <div>
                     <h4 className="font-semibold text-blue-900">Explanation</h4>
-                    <p className="text-blue-800 mt-1">{currentQuestion.explanation}</p>
+                    <p className="text-blue-800 mt-1">{answeredQuestion?.explanation}</p>
                     <div className="mt-2 text-sm text-blue-700">
-                      <strong>BKT Update:</strong> Mastery level {selectedAnswer === currentQuestion.correct ? 'increased' : 'adjusted'} to {Math.round(masteryLevel * 100)}%
+                      <strong>BKT Update:</strong> Mastery level {selectedAnswer === answeredQuestion?.correct ? 'increased' : 'adjusted'} to {Math.round(masteryLevel * 100)}%
                     </div>
                   </div>
                 </div>
