@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect,} from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -206,7 +206,7 @@ export default function LearnSkillPage() {
   const params = useParams()
   const skillId = params.skillId as string
   
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number | null>(null)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [showResult, setShowResult] = useState(false)
   const [score, setScore] = useState(0)
@@ -215,7 +215,9 @@ export default function LearnSkillPage() {
   const [masteryLevel, setMasteryLevel] = useState(0.1) // BKT mastery tracking
   const [answeredQuestions, setAnsweredQuestions] = useState<number[]>([])
   const [bktEngine] = useState(new SimpleBKT())
-  const [answeredQuestion, setAnsweredQuestion] = useState<typeof currentQuestion | null>(null)
+  const [answeredQuestion, setAnsweredQuestion] = useState<SkillData['questions'][number] | null>(null)
+  const [questionReady, setQuestionReady] = useState(false)
+  const [questionLoaded, setQuestionLoaded] = useState(false)
 
 
   const adaptiveMode = true
@@ -235,8 +237,18 @@ export default function LearnSkillPage() {
       if (nextQuestion !== -1) {
         setCurrentQuestionIndex(nextQuestion)
       }
+    } else {
+      setCurrentQuestionIndex(0)
+      setQuestionLoaded(true)
     }
+
   }, [skillId, skillData, router, adaptiveMode, bktEngine, masteryLevel, answeredQuestions])
+
+  useEffect(() => {
+  if (currentQuestionIndex !== null) {
+    setQuestionLoaded(true);
+  }
+}, [currentQuestionIndex]);
 
   if (!skillData) {
     return (
@@ -250,8 +262,15 @@ export default function LearnSkillPage() {
       </div>
     )
   }
+  if (!questionLoaded || currentQuestionIndex === null) return null
 
-  const currentQuestion = skillData.questions[currentQuestionIndex]
+
+  if (currentQuestionIndex === null) return null;
+  const currentQuestion = skillData.questions[currentQuestionIndex];
+
+
+
+
   const progress = (answeredQuestions.length / skillData.questions.length) * 100
 
   const handleAnswerSelect = (answerIndex: number) => {
@@ -260,26 +279,29 @@ export default function LearnSkillPage() {
   }
 
   const handleSubmitAnswer = () => {
-    if (selectedAnswer === null) return
-    const snapshot = { ...currentQuestion }
-    console.log('📌 Submitted:', currentQuestionIndex, currentQuestion)
-    console.log('📌 Snapshot stored as answeredQuestion:', snapshot)
-    setAnsweredQuestion(snapshot)
-    setShowResult(true)
-    const isCorrect = selectedAnswer === currentQuestion.correct
-    if (isCorrect) {
-      setScore(score + 1)
-    }
-    
-    // Update BKT mastery level
-    const newMastery = bktEngine.updateMastery(masteryLevel, isCorrect)
-    setMasteryLevel(newMastery)
-    
-    // Track answered question
-    setAnsweredQuestions(prev => [...prev, currentQuestionIndex])
-    
-    setShowResult(true)
-  }
+  if (!questionLoaded || currentQuestionIndex === null || selectedAnswer === null) return;
+
+
+
+  if (!currentQuestion) return;
+const snapshot = { ...currentQuestion };
+
+  const isCorrect = selectedAnswer === snapshot.correct;
+
+  setAnsweredQuestion(snapshot); // ✅ Set the snapshot
+  setScore(prev => (isCorrect ? prev + 1 : prev)); // ✅ Score if correct
+
+  // BKT update
+  const newMastery = bktEngine.updateMastery(masteryLevel, isCorrect);
+  setMasteryLevel(newMastery);
+
+  setAnsweredQuestions(prev => [...prev, currentQuestionIndex]);
+
+  // ✅ Defer showResult until after answeredQuestion is set
+  setTimeout(() => {
+    setShowResult(true);
+  }, 0);
+};
 
   const handleNextQuestion = () => {
     if (adaptiveMode) {
@@ -295,6 +317,7 @@ export default function LearnSkillPage() {
       }
     } else {
       // Sequential mode
+      if (currentQuestionIndex === null) return null;
       if (currentQuestionIndex < skillData.questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1)
         setSelectedAnswer(null)
@@ -493,7 +516,7 @@ export default function LearnSkillPage() {
                 Select True or False
               </CardDescription>
             )}
-            {currentQuestion.type === 'multiple_choice' && (
+            {(answeredQuestion ?? currentQuestion).type === 'multiple_choice' && (
               <CardDescription className="text-black">
                 Choose the best answer
               </CardDescription>
@@ -535,7 +558,7 @@ export default function LearnSkillPage() {
               ))}
             </div>
 
-            {showResult && (
+            {showResult && answeredQuestion && (
               
               <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <div className="flex items-start space-x-2">
