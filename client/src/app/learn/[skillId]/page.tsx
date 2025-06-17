@@ -88,6 +88,7 @@ interface SkillData {
     correct: number
     explanation: string
     difficulty: 'easy' | 'medium' | 'hard'
+    image?: string
   }[]
 }
 
@@ -170,7 +171,8 @@ const skillQuestions: Record<string, SkillData> = {
         options: ['10 cent coin', '20 cent coin', '30 cent coin', '50 cent coin'],
         correct: 1,
         explanation: 'It is a 20 cents coin! You can tell by the number 20 on the coin.',
-        difficulty: 'easy'
+        difficulty: 'easy',
+        image: ''
       },
       {
         id: 2,
@@ -180,7 +182,8 @@ const skillQuestions: Record<string, SkillData> = {
         options: ['50 cent coin', '2 dollar note', '1 dollar coin', '10 dollar note'],
         correct: 3,
         explanation: 'You can tell that it is a 10 dollar note as it is a rectangle and there is a 10 on it!',
-        difficulty: 'easy'
+        difficulty: 'easy',
+        image: ''
       },
       {
         id: 3,
@@ -190,7 +193,8 @@ const skillQuestions: Record<string, SkillData> = {
         options: ['30¢', '3¢', '300¢', '3000¢'],
         correct: 2,
         explanation: '1 dollar is made out of 100 cents. So if we have 3 dollars, it is made out of 3 x 100 cents which is 300 cents',
-        difficulty: 'easy'
+        difficulty: 'easy',
+        image: ''
       },
       {
         id: 4,
@@ -200,7 +204,8 @@ const skillQuestions: Record<string, SkillData> = {
         options: ['$1.10', '$1.40', '$0.60', '$0.50'],
         correct: 0,
         explanation: 'There are x number of 10 cent coins, x number of 20 cent coins, x number of 50 cent coinss, x number of $1 coins...',
-        difficulty: 'easy'
+        difficulty: 'easy',
+        image: ''
       },
       {
         id: 5,
@@ -210,7 +215,8 @@ const skillQuestions: Record<string, SkillData> = {
         options: ['$12', '$2.40', "$2.60", '$4.70'],
         correct: 2,
         explanation: 'There are x number of 10 cent coins, x number of 50 cent coins, x number of 2 dollar notes, x number of 5 dollar notes...',
-        difficulty: 'medium'
+        difficulty: 'medium',
+        image: ''
       },
       {
         id: 6,
@@ -220,7 +226,8 @@ const skillQuestions: Record<string, SkillData> = {
         options: ['540¢', '5400¢', '440¢', '4400¢'],
         correct: 3,
         explanation: 'There are ...',
-        difficulty: 'hard'
+        difficulty: 'hard',
+        image: ''
       },
       {
   id: 7,
@@ -614,6 +621,17 @@ const snapshot = { ...currentQuestion };
                     {(answeredQuestion ?? currentQuestion).difficulty}
                   </Badge>
                 </div>
+                
+            {(answeredQuestion ?? currentQuestion).image && (
+            <div className="flex justify-center mt-4">
+            <img
+            src={(answeredQuestion ?? currentQuestion).image}
+            alt="Coin shown"
+            className="h-24 object-contain"
+            />
+            </div>
+            )}
+
             {(answeredQuestion ?? currentQuestion).type === 'true_false' && (
               <CardDescription className="text-black">
                 Select True or False
