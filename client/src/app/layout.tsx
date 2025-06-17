@@ -8,7 +8,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Learning Platform",
+  title: "Study Pal",
+  icons: {
+    icon: [
+      { url: '/images/lifehack.png', type: 'image/png', sizes: '32x32' },
+    ],
+  },
   description: "AI-Powered Adaptive Learning System",
 };
 
