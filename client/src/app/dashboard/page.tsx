@@ -109,7 +109,7 @@ export default function DashboardPage() {
           variant={activeTab === 'overview' ? 'default' : 'ghost'}
           size="sm"
           onClick={() => setActiveTab('overview')}
-          className="flex-1"
+          className="card-title"
         >
           <BookOpen className="h-4 w-4 mr-2" />
           Overview
@@ -118,18 +118,18 @@ export default function DashboardPage() {
           variant={activeTab === 'analytics' ? 'default' : 'ghost'}
           size="sm"
           onClick={() => setActiveTab('analytics')}
-          className="flex-1"
+          className="card-title"
         >
-          <BarChart3 className="h-4 w-4 mr-2" />
+          <BarChart3  className="card-title"/>
           Analytics
         </Button>
         <Button
           variant={activeTab === 'achievements' ? 'default' : 'ghost'}
           size="sm"
           onClick={() => setActiveTab('achievements')}
-          className="flex-1"
+          className="card-title"
         >
-          <Award className="h-4 w-4 mr-2" />
+          <Award className="card-title" />
           Achievements
         </Button>
       </div>
@@ -191,7 +191,7 @@ export default function DashboardPage() {
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <Brain className="h-5 w-5 text-blue-600" />
-                  <span>Skill Progress</span>
+                  <span  className="card-title">Skill Progress</span>
                 </CardTitle>
                 <CardDescription className="text-black">Advanced mastery tracking with BKT</CardDescription>
               </CardHeader>
@@ -251,7 +251,7 @@ export default function DashboardPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
+                <CardTitle className="card-title">Recent Activity</CardTitle>
                 <CardDescription className="text-black">Your learning journey</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -404,7 +404,7 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <Trophy className="h-5 w-5 text-yellow-600" />
-                <span>Achievements</span>
+                <span className="card-title">Achievements</span>
               </CardTitle>
               <CardDescription className="text-black">Unlock rewards as you progress</CardDescription>
             </CardHeader>
@@ -558,7 +558,7 @@ export default function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
+            <CardTitle   className="card-title">Recent Activity</CardTitle>
             <CardDescription className="text-black">Classroom updates</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
