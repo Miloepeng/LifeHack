@@ -10,7 +10,7 @@ interface DragAndDropQuestionProps {
   pairs: { target: string; correct: string }[]
   options: string[]
   difficulty: 'easy' | 'medium' | 'hard'
-  onAnswer: (answer: Record<string, string>, isCorrect: boolean) => void
+  onAnswer: (answer: Record<string, string[]>, isCorrect: boolean) => void
   disabled?: boolean
   onNext: () => void
   showNext: boolean
@@ -26,25 +26,45 @@ export function DragAndDropQuestion({
   showNext,
   disabled
 }: DragAndDropQuestionProps) {
-  const [assignments, setAssignments] = useState<Record<string, string>>({})
+  const [assignments, setAssignments] = useState<Record<string, string[]>>({})
   const [dragItem, setDragItem] = useState<string | null>(null)
   const [showResult, setShowResult] = useState(false)
 
   const handleDrop = (target: string) => {
     if (dragItem && !disabled && !showResult) {
-      setAssignments((prev) => ({ ...prev, [target]: dragItem }))
+      setAssignments((prev) => ({
+  ...prev,
+  [target]: [...(prev[target] || []), dragItem]
+}))
+
       setDragItem(null)
     }
   }
 
-  const handleSubmit = () => {
-    if (showResult) return
-    const isCorrect = pairs.every(
-      (pair) => assignments[pair.target] === pair.correct
-    )
-    setShowResult(true)
-    onAnswer(assignments, isCorrect)
-  }
+  const parseCoin = (str: string): number => {
+  if (str.includes('¢')) return parseFloat(str.replace('¢', '')) / 100
+  return parseFloat(str.replace('$', ''))
+}
+
+ const isAllCorrect = pairs.every((pair) => {
+  const dropped = assignments[pair.target] || []
+  const sum = dropped.reduce((total, coin) => total + parseCoin(coin), 0)
+  return Math.abs(sum - parseCoin(pair.correct)) < 0.001 // tolerance for float precision
+})
+
+const handleSubmit = () => {
+  if (showResult) return
+
+  const isCorrect = pairs.every((pair) => {
+    const coins = assignments[pair.target] || []
+    const total = coins.reduce((sum, coin) => sum + parseCoin(coin), 0)
+    const targetAmount = parseCoin(pair.correct)
+    return Math.abs(total - targetAmount) < 0.001 // float-safe comparison
+  })
+
+  setShowResult(true)
+  onAnswer(assignments, isCorrect)
+}
 
   return (
     <Card className="w-full max-w-2xl mx-auto">
@@ -73,10 +93,29 @@ export function DragAndDropQuestion({
               onDrop={() => handleDrop(pair.target)}
               className="min-h-[80px] p-3 border-2 rounded-lg bg-gray-50 flex flex-col justify-center items-center text-center"
             >
-              <div className="font-semibold text-gray-700">{pair.target}</div>
-              <div className="mt-2 text-blue-600 font-medium">
-                {assignments[pair.target] || 'Drop here'}
-              </div>
+              <div className="flex flex-col items-center space-y-1">
+  <img
+    src="/images/piggy.png"
+    alt={pair.target}
+    className="h-20 w-20 object-contain"
+  />
+  <div className="font-semibold text-gray-700">{pair.target}</div>
+  <div className="text-sm text-blue-700">
+    Match this: <span className="font-semibold">{pair.correct}</span>
+  </div>
+</div>
+
+              <div className="flex gap-2 flex-wrap justify-center mt-2">
+            {(assignments[pair.target] || []).length === 0
+            ? <span className="text-blue-600 font-medium">Drop here</span>
+            : assignments[pair.target]?.map((coin, idx) => (
+            <span key={idx} className="px-2 py-1 bg-blue-100 text-sm rounded-full">
+            {coin}
+            </span>
+      ))
+  }
+</div>
+
             </div>
           ))}
         </div>
@@ -94,6 +133,20 @@ export function DragAndDropQuestion({
           ))}
         </div>
 
+        {options.length > 0 && (
+            <div className="flex justify-end">
+            <Button
+            variant="outline"
+            onClick={() => setAssignments({})}
+            disabled={disabled || showResult}
+            className="text-sm"
+            >
+            Clear All
+        </Button>
+        </div>
+        )}
+
+
         {!showResult && (
           <Button
             onClick={handleSubmit}
@@ -107,20 +160,13 @@ export function DragAndDropQuestion({
         {showResult && (
   <>
     <div className={`p-4 rounded-lg ${
-      pairs.every((pair) => assignments[pair.target] === pair.correct)
-        ? 'bg-green-50 border border-green-200'
-        : 'bg-red-50 border border-red-200'
-    }`}>
-      <span className={`font-medium ${
-        pairs.every((pair) => assignments[pair.target] === pair.correct)
-          ? 'text-green-800'
-          : 'text-red-800'
-      }`}>
-        {pairs.every((pair) => assignments[pair.target] === pair.correct)
-          ? 'Correct!'
-          : 'Incorrect'}
-      </span>
-    </div>
+  isAllCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
+}`}>
+  <span className={`font-medium ${isAllCorrect ? 'text-green-800' : 'text-red-800'}`}>
+    {isAllCorrect ? 'Correct!' : 'Incorrect'}
+  </span>
+</div>
+
 
     {showNext && (
       <div className="flex justify-end mt-4">
