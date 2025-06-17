@@ -596,7 +596,10 @@ export default function DashboardPage() {
             </div>
             <Button
               size="sm"
-              onClick={() => router.push(`/learn/${skill.skillId}`)}
+              onClick={() => {
+                setRole('student')
+                setActiveTab('analytics')
+                }}
               className="bg-red-600 hover:bg-red-700 text-white"
             >
             <Zap className="h-4 w-4 mr-1" />
