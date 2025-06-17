@@ -608,7 +608,9 @@ const snapshot = { ...currentQuestion };
                   <CardTitle className="text-xl text-black">
                     {(answeredQuestion ?? currentQuestion).question}
                   </CardTitle>
-                  <Badge variant="outline" className="ml-2">
+                  <Badge variant="outline" className={`ml-2 ${
+                    (answeredQuestion ?? currentQuestion).difficulty === 'easy' ? 'text-green-400' :
+                    (answeredQuestion ?? currentQuestion).difficulty === 'medium' ? 'text-yellow-400' : 'text-red-400'}`}>
                     {(answeredQuestion ?? currentQuestion).difficulty}
                   </Badge>
                 </div>
@@ -625,67 +627,66 @@ const snapshot = { ...currentQuestion };
           </CardHeader>
           <CardContent className="space-y-4">
             {(answeredQuestion ?? currentQuestion).type === 'drag_and_drop' ? (
-  <DragAndDropQuestion
-  question_text={(answeredQuestion ?? currentQuestion).question}
-  difficulty={(answeredQuestion ?? currentQuestion).difficulty}
-  pairs={[
-    { target: 'Piggy Bank A', correct: '$1' },
-    { target: 'Piggy Bank B', correct: '$0.50' },
-    { target: 'Piggy Bank C', correct: '$2' }
-  ]}
-  options={(answeredQuestion ?? currentQuestion).options}
-  onAnswer={(assignments, isCorrect) => {
-    const snapshot = { ...currentQuestion }
-    setAnsweredQuestion(snapshot)
-    if (isCorrect) setScore(prev => prev + 1)
-    const newMastery = bktEngine.updateMastery(masteryLevel, isCorrect)
-    setMasteryLevel(newMastery)
-    setAnsweredQuestions(prev => [...prev, currentQuestionIndex!])
-    setShowResult(true)
-  }}
-  onNext={handleNextQuestion}
-  showNext={showResult}
-  disabled={showResult}
-/>
-) : (
-  <div className="space-y-3">
-    {(answeredQuestion ?? currentQuestion).options.map((option: string, index: number) => (
-      <button
-        key={index}
-        onClick={() => handleAnswerSelect(index)}
-        disabled={showResult}
-        className={`w-full p-4 text-left rounded-lg border-2 transition-all duration-200 ${
-          selectedAnswer === index
-            ? showResult
-              ? index === answeredQuestion?.correct
-                ? 'border-green-500 bg-green-50 text-green-800'
-                : 'border-red-500 bg-red-50 text-red-800'
-              : 'border-blue-500 bg-blue-50 text-blue-800'
-            : showResult && index === answeredQuestion?.correct
-              ? 'border-green-500 bg-green-50 text-green-800'
-              : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100 text-black'
-        }`}
-      >
-        <div className="flex items-center justify-between">
-          <span className="font-medium">{option}</span>
-          {showResult && (
-            <>
-              {index === answeredQuestion?.correct && (
-                <CheckCircle className="h-5 w-5 text-green-600" />
+              <DragAndDropQuestion
+                question_text={(answeredQuestion ?? currentQuestion).question}
+                difficulty={(answeredQuestion ?? currentQuestion).difficulty}
+                pairs={[
+                  { target: 'Piggy Bank A', correct: '$1' },
+                  { target: 'Piggy Bank B', correct: '$0.50' },
+                  { target: 'Piggy Bank C', correct: '$2' }
+                ]}
+                options={(answeredQuestion ?? currentQuestion).options}
+                onAnswer={(assignments, isCorrect) => {
+                  const snapshot = { ...currentQuestion }
+                  setAnsweredQuestion(snapshot)
+                  if (isCorrect) setScore(prev => prev + 1)
+                  const newMastery = bktEngine.updateMastery(masteryLevel, isCorrect)
+                  setMasteryLevel(newMastery)
+                  setAnsweredQuestions(prev => [...prev, currentQuestionIndex!])
+                  setShowResult(true)
+                }}
+                onNext={handleNextQuestion}
+                showNext={showResult}
+                disabled={showResult}
+              />
+              ) : (
+                <div className="space-y-3">
+                  {(answeredQuestion ?? currentQuestion).options.map((option: string, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => handleAnswerSelect(index)}
+                      disabled={showResult}
+                      className={`w-full p-4 text-left rounded-lg border-2 transition-all duration-200 ${
+                        selectedAnswer === index
+                          ? showResult
+                            ? index === answeredQuestion?.correct
+                              ? 'border-green-500 bg-green-50 text-green-800'
+                              : 'border-red-500 bg-red-50 text-red-800'
+                            : 'border-blue-500 bg-blue-50 text-blue-800'
+                          : showResult && index === answeredQuestion?.correct
+                            ? 'border-green-500 bg-green-50 text-green-800'
+                            : 'border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-gray-100 text-black'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium">{option}</span>
+                        {showResult && (
+                          <>
+                            {index === answeredQuestion?.correct && (
+                              <CheckCircle className="h-5 w-5 text-green-600" />
+                            )}
+                            {selectedAnswer === index && index !== answeredQuestion?.correct && (
+                              <XCircle className="h-5 w-5 text-red-600" />
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
               )}
-              {selectedAnswer === index && index !== answeredQuestion?.correct && (
-                <XCircle className="h-5 w-5 text-red-600" />
-              )}
-            </>
-          )}
-        </div>
-      </button>
-    ))}
-  </div>
-)}
 
             {showResult && answeredQuestion && (
-              
               <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <div className="flex items-start space-x-2">
                   <Lightbulb className="h-5 w-5 text-blue-600 mt-0.5" />
@@ -701,27 +702,27 @@ const snapshot = { ...currentQuestion };
             )}
 
             {(answeredQuestion ?? currentQuestion).type !== 'drag_and_drop' && (
-  <div className="flex justify-end space-x-3 pt-4">
-    {!showResult && (
-      <Button 
-        onClick={handleSubmitAnswer}
-        disabled={selectedAnswer === null}
-        className="bg-blue-600 hover:bg-blue-700"
-      >
-        Submit Answer
-      </Button>
-    )}
-    {showResult && (
-      <Button 
-        onClick={handleNextQuestion}
-        className="bg-blue-600 hover:bg-blue-700"
-      >
-        <Zap className="h-4 w-4 mr-2" />
-        Next (AI Selected)
-      </Button>
-    )}
-  </div>
-)}
+              <div className="flex justify-end space-x-3 pt-4">
+                {!showResult && (
+                  <Button 
+                    onClick={handleSubmitAnswer}
+                    disabled={selectedAnswer === null}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    Submit Answer
+                  </Button>
+                )}
+                {showResult && (
+                  <Button 
+                    onClick={handleNextQuestion}
+                    className="bg-blue-600 hover:bg-blue-700"
+                  >
+                    <Zap className="h-4 w-4 mr-2" />
+                    Next (AI Selected)
+                  </Button>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
