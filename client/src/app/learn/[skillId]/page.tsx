@@ -93,7 +93,7 @@ interface SkillData {
 
 const skillQuestions: Record<string, SkillData> = {
   'math-money-1': {
-    name: 'Math: Money 1',
+    name: 'Math: Decimal Notation',
     description: 'Before getting started on money, we would have to learn the decimal notation, read and write in decimal!',
     questions: [
       {
@@ -159,7 +159,7 @@ const skillQuestions: Record<string, SkillData> = {
     ]
   },
   'math-money-2': {
-    name: 'Math: Money 2',
+    name: 'Math: Counting Money',
     description: 'Learn recognise coins and notes, and count them!',
     questions: [
       {
@@ -225,7 +225,7 @@ const skillQuestions: Record<string, SkillData> = {
     ]
   },
   'math-money 3': {
-    name: 'Math: Money 3',
+    name: 'Math: Money & Real World Problems',
     description: 'Now that you are so capable at counting money, lets compare multiple amounts and see some real world examples!',
     questions: [
       {
