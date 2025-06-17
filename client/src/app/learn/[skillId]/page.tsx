@@ -225,24 +225,23 @@ export default function LearnSkillPage() {
   const skillData = skillQuestions[skillId]
   
   useEffect(() => {
-    if (!skillData) {
-      router.push('/dashboard')
-      return
-    }
-    setTimeStarted(Date.now())
-    
-    // Initialize with adaptive question selection
-    if (adaptiveMode) {
-      const nextQuestion = bktEngine.selectNextQuestion(skillData.questions, masteryLevel, answeredQuestions)
-      if (nextQuestion !== -1) {
-        setCurrentQuestionIndex(nextQuestion)
-      }
-    } else {
-      setCurrentQuestionIndex(0)
-      setQuestionLoaded(true)
-    }
+  if (!skillData) {
+    router.push('/dashboard')
+    return
+  }
 
-  }, [skillId, skillData, router, adaptiveMode, bktEngine, masteryLevel, answeredQuestions])
+  setTimeStarted(Date.now())
+
+  if (adaptiveMode) {
+    const nextQuestion = bktEngine.selectNextQuestion(skillData.questions, 0.1, [])
+    if (nextQuestion !== -1) {
+      setCurrentQuestionIndex(nextQuestion)
+    }
+  } else {
+    setCurrentQuestionIndex(0)
+  }
+}, [skillId]) // Only depend on skillId
+
 
   useEffect(() => {
   if (currentQuestionIndex !== null) {
@@ -338,6 +337,7 @@ const snapshot = { ...currentQuestion };
     setTimeStarted(Date.now())
     setMasteryLevel(0.1)
     setAnsweredQuestions([])
+    setAnsweredQuestion(null) 
   }
 
   const getMasteryLevel = () => {
