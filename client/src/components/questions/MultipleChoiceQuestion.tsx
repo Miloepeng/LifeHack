@@ -4,9 +4,16 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { Database } from '@/lib/supabase'
+import { useEffect } from 'react'
 
-type Question = Database['public']['Tables']['questions']['Row']
 
+
+type Question = {
+  question_text: string
+  options: string[]
+  correct: number
+  difficulty: 'easy' | 'medium' | 'hard'
+}
 interface MultipleChoiceQuestionProps {
   question: Question
   onAnswer: (answer: string, isCorrect: boolean) => void
@@ -14,34 +21,40 @@ interface MultipleChoiceQuestionProps {
 }
 
 export function MultipleChoiceQuestion({ question, onAnswer, disabled }: MultipleChoiceQuestionProps) {
-  const [selectedAnswer, setSelectedAnswer] = useState<string>('')
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number | null>(null)
   const [showResult, setShowResult] = useState(false)
 
-  const handleAnswerSelect = (answer: string) => {
+  useEffect(() => {
+  // When the parent question prop changes, reset state
+  setSelectedAnswerIndex(null)
+  setShowResult(false)
+}, [question])
+
+  const handleAnswerSelect = (index: number) => {
     if (disabled || showResult) return
-    setSelectedAnswer(answer)
+    setSelectedAnswerIndex(index)
   }
 
   const handleSubmit = () => {
-    if (!selectedAnswer || showResult) return
+    if (!selectedAnswerIndex || showResult) return
     
-    const isCorrect = selectedAnswer === question.correct_answer
+     const isCorrect = selectedAnswerIndex === question.correct
     setShowResult(true)
-    onAnswer(selectedAnswer, isCorrect)
+    onAnswer(question.options[selectedAnswerIndex], isCorrect)
   }
 
-  const getOptionStyle = (option: string) => {
+  const getOptionStyle = (index: number) => {
     if (!showResult) {
-      return selectedAnswer === option
+      return selectedAnswerIndex === index
         ? 'border-blue-500 bg-blue-50 text-blue-700'
         : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
     }
 
-    if (option === question.correct_answer) {
+    if (index === question.correct) {
       return 'border-green-500 bg-green-50 text-green-700'
     }
 
-    if (option === selectedAnswer && option !== question.correct_answer) {
+    if (selectedAnswerIndex === index && index !== question.correct) {
       return 'border-red-500 bg-red-50 text-red-700'
     }
 
@@ -68,18 +81,18 @@ export function MultipleChoiceQuestion({ question, onAnswer, disabled }: Multipl
 
       <CardContent className="space-y-4">
         <div className="space-y-3">
-          {question.options?.map((option, index) => (
+          {question.options.map((option, index) => (
             <button
               key={index}
-              onClick={() => handleAnswerSelect(option)}
+              onClick={() => handleAnswerSelect(index)}
               disabled={disabled || showResult}
-              className={`w-full p-4 text-left border-2 rounded-lg transition-colors ${getOptionStyle(option)}`}
+              className={`w-full p-4 text-left border-2 rounded-lg transition-colors ${getOptionStyle(index)}`}
             >
               <div className="flex items-center space-x-3">
                 <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                  selectedAnswer === option ? 'border-current' : 'border-gray-300'
+                  selectedAnswerIndex === index ? 'border-current' : 'border-gray-300'
                 }`}>
-                  {selectedAnswer === option && (
+                  {selectedAnswerIndex === index && (
                     <div className="w-3 h-3 rounded-full bg-current"></div>
                   )}
                 </div>
@@ -93,7 +106,7 @@ export function MultipleChoiceQuestion({ question, onAnswer, disabled }: Multipl
         {!showResult && (
           <Button
             onClick={handleSubmit}
-            disabled={!selectedAnswer || disabled}
+            disabled={selectedAnswerIndex === null || disabled}
             className="w-full"
           >
             Submit Answer
@@ -102,29 +115,29 @@ export function MultipleChoiceQuestion({ question, onAnswer, disabled }: Multipl
 
         {showResult && (
           <div className={`p-4 rounded-lg ${
-            selectedAnswer === question.correct_answer
+            selectedAnswerIndex === question.correct
               ? 'bg-green-50 border border-green-200'
               : 'bg-red-50 border border-red-200'
           }`}>
             <div className="flex items-center space-x-2">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                selectedAnswer === question.correct_answer
+                selectedAnswerIndex === question.correct
                   ? 'bg-green-500 text-white'
                   : 'bg-red-500 text-white'
               }`}>
-                {selectedAnswer === question.correct_answer ? '✓' : '✗'}
+                {selectedAnswerIndex === question.correct ? '✓' : '✗'}
               </div>
               <span className={`font-medium ${
-                selectedAnswer === question.correct_answer
+                selectedAnswerIndex === question.correct
                   ? 'text-green-800'
                   : 'text-red-800'
               }`}>
-                {selectedAnswer === question.correct_answer ? 'Correct!' : 'Incorrect'}
+                {selectedAnswerIndex === question.correct ? 'Correct!' : 'Incorrect'}
               </span>
             </div>
-            {selectedAnswer !== question.correct_answer && (
+            {selectedAnswerIndex !== question.correct && (
               <p className="mt-2 text-sm text-red-700">
-                The correct answer is: {question.correct_answer}
+                The correct answer is: {question.options[question.correct]}
               </p>
             )}
           </div>
@@ -132,4 +145,4 @@ export function MultipleChoiceQuestion({ question, onAnswer, disabled }: Multipl
       </CardContent>
     </Card>
   )
-} 
+}
