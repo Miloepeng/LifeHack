@@ -477,7 +477,9 @@ export default function DashboardPage() {
       )}
     </div>
   )
-
+  const lowestMasterySkills = [...mockLearningData.skillProgress]
+  .sort((a, b) => a.masteryPercentage - b.masteryPercentage)
+  .slice(0, 3)
   const TeacherDashboard = () => (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -526,7 +528,7 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card>
           <CardHeader>
             <CardTitle>Student Performance</CardTitle>
@@ -575,9 +577,43 @@ export default function DashboardPage() {
             ))}
           </CardContent>
         </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+            <Flame className="h-5 w-5 text-red-600" />
+              <span>Lowest Mastery Topics</span>
+            </CardTitle>
+            <CardDescription className="text-black">Topics needing the most attention across students</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {lowestMasterySkills.map((skill, index) => (
+              <div key={index} className="p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-center justify-between">
+              <div>
+              <h3 className="font-semibold text-red-800">{skill.name}</h3>
+              <p className="text-sm text-red-700">{skill.masteryPercentage}% mastery</p>
+            </div>
+            <Button
+              size="sm"
+              onClick={() => router.push(`/learn/${skill.skillId}`)}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+            <Zap className="h-4 w-4 mr-1" />
+            Review
+          </Button>
+          </div>
+          </div>
+          ))}
+        </CardContent>
+        </Card>
+
       </div>
     </div>
   )
+
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
