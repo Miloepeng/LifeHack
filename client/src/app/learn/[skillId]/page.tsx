@@ -91,112 +91,33 @@ interface SkillData {
 }
 
 const skillQuestions: Record<string, SkillData> = {
-  'js-fundamentals': {
-    name: 'JavaScript Fundamentals',
-    description: 'Learn the basics of JavaScript programming',
+  'math-money-1': {
+    name: 'Math: Money 1',
+    description: 'Before getting started on money, we would have to learn the decimal notation, read and write in decimal!',
     questions: [
       {
         id: 1,
-        question: 'What is the result of 5 + "5" in JavaScript?',
+        question: 'NEED TO FIGURE OUT HOW TO ADD PICTURE',
         type: 'multiple_choice',
-        options: ['10', '55', 'Error', 'NaN'],
+        options: [],
         correct: 1,
-        explanation: 'In JavaScript, when you add a number and a string, the number is converted to a string and concatenated.',
+        explanation: 'Etiam ornare, ante in consequat pulvinar, magna quam placerat quam, nec maximus metus sem ut nisl.',
         difficulty: 'easy'
       },
-      {
-        id: 2,
-        question: 'Which keyword is used to declare a variable in JavaScript?',
-        type: 'multiple_choice',
-        options: ['var', 'let', 'const', 'All of the above'],
-        correct: 3,
-        explanation: 'JavaScript has three ways to declare variables: var (function-scoped), let (block-scoped), and const (block-scoped, immutable).',
-        difficulty: 'easy'
-      },
-      {
-        id: 3,
-        question: 'Is JavaScript case-sensitive?',
-        type: 'true_false',
-        options: ['True', 'False'],
-        correct: 0,
-        explanation: 'JavaScript is case-sensitive. Variables like "myVar" and "myvar" are different.',
-        difficulty: 'easy'
-      },
-      {
-        id: 4,
-        question: 'What does "typeof null" return in JavaScript?',
-        type: 'multiple_choice',
-        options: ['null', 'undefined', 'object', 'boolean'],
-        correct: 2,
-        explanation: 'This is a well-known JavaScript quirk. "typeof null" returns "object" due to a legacy bug in the language.',
-        difficulty: 'medium'
-      },
-      {
-        id: 5,
-        question: 'Which method is used to add an element to the end of an array?',
-        type: 'multiple_choice',
-        options: ['push()', 'pop()', 'shift()', 'unshift()'],
-        correct: 0,
-        explanation: 'The push() method adds one or more elements to the end of an array and returns the new length.',
-        difficulty: 'medium'
-      }
     ]
   },
-  'react-components': {
-    name: 'React Components',
-    description: 'Understanding React component lifecycle and patterns',
+  'math-money-2': {
+    name: 'Math: Money 2',
+    description: 'Learn how to read and write money in decimal form, and compare multiple amounts!',
     questions: [
-      {
-        id: 1,
-        question: 'What is JSX?',
-        type: 'multiple_choice',
-        options: ['JavaScript XML', 'Java Syntax Extension', 'JSON Extended', 'JavaScript Extension'],
-        correct: 0,
-        explanation: 'JSX stands for JavaScript XML. It allows you to write HTML-like syntax in JavaScript.',
-        difficulty: 'easy'
-      },
-      {
-        id: 2,
-        question: 'Which hook is used for state management in functional components?',
-        type: 'multiple_choice',
-        options: ['useEffect', 'useState', 'useContext', 'useReducer'],
-        correct: 1,
-        explanation: 'useState is the primary hook for managing state in functional React components.',
-        difficulty: 'medium'
-      },
-      {
-        id: 3,
-        question: 'React components must return a single parent element.',
-        type: 'true_false',
-        options: ['True', 'False'],
-        correct: 1,
-        explanation: 'False. React components can return multiple elements using React.Fragment or <> </> syntax.',
-        difficulty: 'hard'
-      }
+      
     ]
   },
-  'css-flexbox': {
-    name: 'CSS Flexbox',
-    description: 'Modern CSS layout techniques with Flexbox',
+  'math-money 3': {
+    name: 'Math: Money 3',
+    description: 'Now that you are so capable at counting money, lets compare multiple amounts and see some real world examples!',
     questions: [
-      {
-        id: 1,
-        question: 'What does "flex: 1" mean in CSS Flexbox?',
-        type: 'multiple_choice',
-        options: ['Fixed width of 1px', 'Grow to fill available space', 'Minimum width of 1', 'Maximum of 1 item'],
-        correct: 1,
-        explanation: 'flex: 1 is shorthand for flex-grow: 1, which makes the item grow to fill available space.',
-        difficulty: 'medium'
-      },
-      {
-        id: 2,
-        question: 'Is "display: flex" applied to the container or items?',
-        type: 'multiple_choice',
-        options: ['Container', 'Items', 'Both', 'Neither'],
-        correct: 0,
-        explanation: 'display: flex is applied to the parent container to create a flex layout for its children.',
-        difficulty: 'easy'
-      }
+      
     ]
   }
 }
