@@ -337,7 +337,7 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <BarChart3 className="h-5 w-5 text-blue-600" />
-                <span>Learning Analytics</span>
+                <span className='text-gray-700'>Learning Analytics</span>
               </CardTitle>
               <CardDescription className="text-black">Detailed performance insights powered by BKT</CardDescription>
             </CardHeader>
@@ -442,11 +442,11 @@ export default function DashboardPage() {
                             }`}>
                               {achievement.title}
                             </h4>
-                            <Badge variant={
-                              achievement.rarity === 'legendary' ? 'destructive' :
-                              achievement.rarity === 'epic' ? 'default' :
-                              achievement.rarity === 'rare' ? 'secondary' : 'outline'
-                            } className="text-xs">
+                            <Badge variant="outline" className = {`text-xs ${
+                              achievement.rarity === 'legendary' ? 'text-yellow-500' :
+                              achievement.rarity === 'epic' ? 'text-purple-500' :
+                              achievement.rarity === 'rare' ? 'text-blue-400' : 'text-gray-400'
+                            }` }>
                               {achievement.rarity}
                             </Badge>
                           </div>
@@ -469,7 +469,7 @@ export default function DashboardPage() {
                           )}
                           {achievement.unlocked && (
                             <div className="mt-2">
-                              <Badge variant="secondary" className="text-xs">
+                              <Badge variant="outline" className="text-xs text-green-500">
                                 ✓ Unlocked
                               </Badge>
                             </div>

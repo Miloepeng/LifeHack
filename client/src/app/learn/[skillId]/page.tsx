@@ -476,7 +476,7 @@ const snapshot = { ...currentQuestion };
             <Button 
               variant="outline" 
               onClick={() => router.push('/dashboard')}
-              className="mb-4"
+              className="text-gray-600 mb-4"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Dashboard
@@ -572,7 +572,7 @@ const snapshot = { ...currentQuestion };
           <Button 
             variant="outline" 
             onClick={() => router.push('/dashboard')}
-            className="mb-4"
+            className="text-gray-600 mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
