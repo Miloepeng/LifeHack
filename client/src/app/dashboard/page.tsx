@@ -104,7 +104,7 @@ export default function DashboardPage() {
   const StudentDashboard = () => (
     <div className="space-y-6">
       {/* Tab Navigation */}
-      <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
+      <div className="flex space-x-1 bg-gray-50 p-1 rounded-lg">
         <Button
           variant={activeTab === 'overview' ? 'default' : 'ghost'}
           size="sm"
@@ -540,7 +540,7 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Student Performance</CardTitle>
+            <CardTitle className='card-title'>Student Performance</CardTitle>
             <CardDescription className="text-black">Top performing students this week</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -559,7 +559,7 @@ export default function DashboardPage() {
                     <p className="text-sm text-black">{student.skills} skills mastered</p>
                   </div>
                 </div>
-                <Badge variant="secondary">{student.progress}%</Badge>
+                <Badge variant="secondary" className='text-yellow-500'>{student.progress}%</Badge>
               </div>
             ))}
           </CardContent>
@@ -567,7 +567,7 @@ export default function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle   className="card-title">Recent Activity</CardTitle>
+            <CardTitle className="card-title">Recent Activity</CardTitle>
             <CardDescription className="text-black">Classroom updates</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -591,7 +591,7 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
             <Flame className="h-5 w-5 text-red-600" />
-              <span>Lowest Mastery Topics</span>
+              <span className='card-title'>Lowest Mastery Topics</span>
             </CardTitle>
             <CardDescription className="text-black">Topics needing the most attention across students</CardDescription>
           </CardHeader>

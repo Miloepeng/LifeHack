@@ -368,7 +368,7 @@ export default function LearnSkillPage() {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
         <div className="text-center text-black">
           <p className="mb-4">Skill not found</p>
-          <Button className="text-gray-600" onClick={() => router.push('/dashboard')}>
+          <Button className="text-gray-600 hover:bg-gray-200" onClick={() => router.push('/dashboard')}>
             Back to Dashboard
           </Button>
         </div>
@@ -489,7 +489,7 @@ const snapshot = { ...currentQuestion };
             <Button 
               variant="outline" 
               onClick={() => router.push('/dashboard')}
-              className="text-gray-600 mb-4"
+              className="text-gray-600 hover:bg-gray-200 mb-4"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Dashboard
@@ -564,7 +564,7 @@ const snapshot = { ...currentQuestion };
                 </Button>
                 <Button 
                   variant="outline"
-                  className="text-gray-600"
+                  className="text-gray-600 hover:bg-gray-200"
                   onClick={() => router.push('/dashboard')}
                 >
                   Back to Dashboard
@@ -586,7 +586,7 @@ const snapshot = { ...currentQuestion };
           <Button 
             variant="outline" 
             onClick={() => router.push('/dashboard')}
-            className="text-gray-600 mb-4"
+            className="text-gray-600 mb-4 hover:bg-gray-200"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
@@ -624,7 +624,7 @@ const snapshot = { ...currentQuestion };
                   </CardTitle>
                   <Badge variant="outline" className={`ml-2 ${
                     (answeredQuestion ?? currentQuestion).difficulty === 'easy' ? 'text-green-400' :
-                    (answeredQuestion ?? currentQuestion).difficulty === 'medium' ? 'text-yellow-400' : 'text-red-400'}`}>
+                    (answeredQuestion ?? currentQuestion).difficulty === 'medium' ? 'text-yellow-500' : 'text-red-400'}`}>
                     {(answeredQuestion ?? currentQuestion).difficulty}
                   </Badge>
                 </div>
