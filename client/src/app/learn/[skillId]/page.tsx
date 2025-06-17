@@ -83,6 +83,7 @@ interface SkillData {
     id: number
     question: string
     type: 'multiple_choice' | 'true_false'
+    topics: string[]
     options: string[]
     correct: number
     explanation: string
@@ -97,12 +98,63 @@ const skillQuestions: Record<string, SkillData> = {
     questions: [
       {
         id: 1,
-        question: 'NEED TO FIGURE OUT HOW TO ADD PICTURE',
+        question: 'Which of the following is a decimal number?',
         type: 'multiple_choice',
-        options: [],
-        correct: 1,
-        explanation: 'Etiam ornare, ante in consequat pulvinar, magna quam placerat quam, nec maximus metus sem ut nisl.',
+        topics: ['Read and write in decimal', 'Decimal Notation'],
+        options: ['3', '0', '120', '1.2'],
+        correct: 3,
+        explanation: 'Decimal numbers are numbers that have a dot (we call them a decimal point) in them.',
         difficulty: 'easy'
+      },
+      {
+        id: 2,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'easy'
+      },
+      {
+        id: 3,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'easy'
+      },
+      {
+        id: 4,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'medium'
+      },
+      {
+        id: 5,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'medium'
+      },
+      {
+        id: 6,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'hard'
       },
     ]
   },
@@ -110,14 +162,132 @@ const skillQuestions: Record<string, SkillData> = {
     name: 'Math: Money 2',
     description: 'Learn how to read and write money in decimal form, and compare multiple amounts!',
     questions: [
-      
+      {
+        id: 1,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 3,
+        explanation: '',
+        difficulty: 'easy'
+      },
+      {
+        id: 2,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'easy'
+      },
+      {
+        id: 3,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'easy'
+      },
+      {
+        id: 4,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'medium'
+      },
+      {
+        id: 5,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'medium'
+      },
+      {
+        id: 6,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'hard'
+      },
     ]
   },
   'math-money 3': {
     name: 'Math: Money 3',
     description: 'Now that you are so capable at counting money, lets compare multiple amounts and see some real world examples!',
     questions: [
-      
+      {
+        id: 1,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 3,
+        explanation: '',
+        difficulty: 'easy'
+      },
+      {
+        id: 2,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'easy'
+      },
+      {
+        id: 3,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'easy'
+      },
+      {
+        id: 4,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'medium'
+      },
+      {
+        id: 5,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'medium'
+      },
+      {
+        id: 6,
+        question: '',
+        type: 'multiple_choice',
+        topics: [],
+        options: [],
+        correct: 0,
+        explanation: '',
+        difficulty: 'hard'
+      },
     ]
   }
 }
