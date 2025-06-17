@@ -44,8 +44,8 @@ A comprehensive AI-powered learning platform built with Next.js, TypeScript, and
    
    The environment variables are already configured in `.env.local`:
    ```env
-   NEXT_PUBLIC_SUPABASE_URL=https://xyoeyjwwjpqtiwizqmcu.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh5b2V5and3anBxdGl3aXpxbWN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAxNTcxNzgsImV4cCI6MjA2NTczMzE3OH0.wq8x2uBFXunv8M1MlqRTeC6hZmT_WqabwNx_ORZFwtc
+   NEXT_PUBLIC_SUPABASE_URL="your-url"
+   NEXT_PUBLIC_SUPABASE_ANON_KEY="your-key"
    ```
 
 4. **Database Setup**

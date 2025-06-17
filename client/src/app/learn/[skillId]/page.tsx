@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import StudyTimer from '@/components/StudyTimer'
 import { 
   ArrowLeft, 
   CheckCircle, 
@@ -15,7 +16,8 @@ import {
   Trophy,
   Brain,
   Lightbulb,
-  Zap
+  Zap,
+  Timer
 } from 'lucide-react'
 
 // Simple BKT-inspired adaptive learning system
@@ -215,6 +217,7 @@ export default function LearnSkillPage() {
   const [masteryLevel, setMasteryLevel] = useState(0.1) // BKT mastery tracking
   const [answeredQuestions, setAnsweredQuestions] = useState<number[]>([])
   const [bktEngine] = useState(new SimpleBKT())
+  const [showTimer, setShowTimer] = useState(false)
   const adaptiveMode = true
 
   const skillData = skillQuestions[skillId]
@@ -456,6 +459,15 @@ export default function LearnSkillPage() {
                   <Brain className="h-3 w-3 mr-1" />
                   {masteryInfo.label} ({Math.round(masteryLevel * 100)}%)
                 </Badge>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setShowTimer(!showTimer)}
+                  className="ml-2"
+                >
+                  <Timer className="h-4 w-4 mr-1" />
+                  {showTimer ? 'Hide Timer' : 'Show Timer'}
+                </Button>
               </div>
               <p className="text-sm text-black">Question {answeredQuestions.length + 1} • Adaptive Mode</p>
               <div className="flex items-center space-x-2 mt-1">
@@ -468,16 +480,18 @@ export default function LearnSkillPage() {
           <Progress value={progress} className="mt-4" />
         </div>
 
-        <Card className="bg-white shadow-lg">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-xl text-black">
-                {currentQuestion.question}
-              </CardTitle>
-              <Badge variant="outline" className="ml-2">
-                {currentQuestion.difficulty}
-              </Badge>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <Card className="bg-white shadow-lg">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-xl text-black">
+                    {currentQuestion.question}
+                  </CardTitle>
+                  <Badge variant="outline" className="ml-2">
+                    {currentQuestion.difficulty}
+                  </Badge>
+                </div>
             {currentQuestion.type === 'true_false' && (
               <CardDescription className="text-black">
                 Select True or False
@@ -562,7 +576,21 @@ export default function LearnSkillPage() {
             </div>
           </CardContent>
         </Card>
+          </div>
+          
+          {/* Study Timer Sidebar */}
+          {showTimer && (
+            <div className="lg:col-span-1">
+              <StudyTimer 
+                skillId={skillId}
+                onSessionComplete={(session) => {
+                  console.log('Study session completed:', session)
+                }}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
-} 
+}
