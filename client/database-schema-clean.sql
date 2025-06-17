@@ -1,0 +1,273 @@
+-- Clean Database Schema for AI Learning Platform with Bayesian Knowledge Tracing
+-- This version handles existing tables and policies gracefully
+
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can view their own profile" ON public.profiles;
+DROP POLICY IF EXISTS "Users can update their own profile" ON public.profiles;
+DROP POLICY IF EXISTS "Users can insert their own profile" ON public.profiles;
+DROP POLICY IF EXISTS "Teachers can view all student profiles" ON public.profiles;
+DROP POLICY IF EXISTS "Everyone can view skills" ON public.skills;
+DROP POLICY IF EXISTS "Teachers can manage skills" ON public.skills;
+DROP POLICY IF EXISTS "Everyone can view questions" ON public.questions;
+DROP POLICY IF EXISTS "Students can view their own training log" ON public.training_log;
+DROP POLICY IF EXISTS "Students can insert their own training log" ON public.training_log;
+DROP POLICY IF EXISTS "Teachers can view all training logs" ON public.training_log;
+DROP POLICY IF EXISTS "Students can view their own skill state" ON public.skill_state;
+DROP POLICY IF EXISTS "Students can update their own skill state" ON public.skill_state;
+DROP POLICY IF EXISTS "Students can insert their own skill state" ON public.skill_state;
+DROP POLICY IF EXISTS "Teachers can view all skill states" ON public.skill_state;
+
+-- Drop existing triggers and functions
+DROP TRIGGER IF EXISTS training_log_skill_update ON public.training_log;
+DROP FUNCTION IF EXISTS update_skill_state_after_question();
+
+-- Drop existing tables (in correct order due to foreign keys)
+DROP TABLE IF EXISTS public.training_log CASCADE;
+DROP TABLE IF EXISTS public.skill_state CASCADE;
+DROP TABLE IF EXISTS public.bkt_model_state CASCADE;
+DROP TABLE IF EXISTS public.questions CASCADE;
+DROP TABLE IF EXISTS public.skills CASCADE;
+DROP TABLE IF EXISTS public.profiles CASCADE;
+
+-- Enable Row Level Security
+ALTER TABLE IF EXISTS public.profiles ENABLE ROW LEVEL SECURITY;
+
+-- Table 1: Profiles (Login details)
+CREATE TABLE public.profiles (
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    full_name TEXT NOT NULL,
+    role TEXT CHECK (role IN ('student', 'teacher')) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+-- Skills table
+CREATE TABLE public.skills (
+    skill_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    difficulty_level TEXT CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced')) DEFAULT 'beginner',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+-- Questions table
+CREATE TABLE public.questions (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    skill_id UUID REFERENCES public.skills(skill_id) ON DELETE CASCADE NOT NULL,
+    question_text TEXT NOT NULL,
+    question_type TEXT CHECK (question_type IN ('multiple_choice', 'true_false', 'short_answer')) NOT NULL,
+    options TEXT[], -- JSON array for multiple choice options
+    correct_answer TEXT NOT NULL,
+    difficulty TEXT CHECK (difficulty IN ('easy', 'medium', 'hard')) NOT NULL,
+    estimated_time_seconds INTEGER DEFAULT 60,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+-- Table 2: Training Log
+CREATE TABLE public.training_log (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID REFERENCES public.profiles(user_id) ON DELETE CASCADE NOT NULL,
+    skill_id UUID REFERENCES public.skills(skill_id) ON DELETE CASCADE NOT NULL,
+    question_id UUID REFERENCES public.questions(id) ON DELETE CASCADE,
+    correct BOOLEAN NOT NULL,
+    opportunity INTEGER NOT NULL,
+    response_time_seconds INTEGER,
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+-- Table 3: Skill State
+CREATE TABLE public.skill_state (
+    user_id UUID REFERENCES public.profiles(user_id) ON DELETE CASCADE NOT NULL,
+    skill_id UUID REFERENCES public.skills(skill_id) ON DELETE CASCADE NOT NULL,
+    opportunity INTEGER DEFAULT 0 NOT NULL,
+    estimated_mastery REAL DEFAULT 0.0 NOT NULL CHECK (estimated_mastery >= 0.0 AND estimated_mastery <= 1.0),
+    last_updated TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+    prior_knowledge REAL DEFAULT 0.1,
+    learn_rate REAL DEFAULT 0.1,
+    guess_rate REAL DEFAULT 0.2,
+    slip_rate REAL DEFAULT 0.1,
+    PRIMARY KEY (user_id, skill_id)
+);
+
+-- BKT Model State table
+CREATE TABLE public.bkt_model_state (
+    skill_id UUID REFERENCES public.skills(skill_id) ON DELETE CASCADE PRIMARY KEY,
+    model_version INTEGER DEFAULT 1,
+    prior_knowledge REAL DEFAULT 0.1,
+    learn_rate REAL DEFAULT 0.1,
+    guess_rate REAL DEFAULT 0.2,
+    slip_rate REAL DEFAULT 0.1,
+    last_trained TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+    training_samples INTEGER DEFAULT 0,
+    model_accuracy REAL DEFAULT 0.0
+);
+
+-- Function to update skill state after each question
+CREATE OR REPLACE FUNCTION update_skill_state_after_question()
+RETURNS TRIGGER AS $$
+DECLARE
+    current_mastery REAL;
+    new_mastery REAL;
+    learn_rate REAL;
+    guess_rate REAL;
+    slip_rate REAL;
+BEGIN
+    -- Get current skill state parameters
+    SELECT estimated_mastery, ss.learn_rate, ss.guess_rate, ss.slip_rate
+    INTO current_mastery, learn_rate, guess_rate, slip_rate
+    FROM public.skill_state ss
+    WHERE ss.user_id = NEW.user_id AND ss.skill_id = NEW.skill_id;
+    
+    -- If no existing state, initialize with defaults
+    IF NOT FOUND THEN
+        INSERT INTO public.skill_state (user_id, skill_id, opportunity, estimated_mastery)
+        VALUES (NEW.user_id, NEW.skill_id, 1, 0.1);
+        current_mastery := 0.1;
+        learn_rate := 0.1;
+        guess_rate := 0.2;
+        slip_rate := 0.1;
+    END IF;
+    
+    -- Simple BKT update (Bayesian update)
+    IF NEW.correct THEN
+        new_mastery := (current_mastery * (1 - slip_rate)) / 
+                       (current_mastery * (1 - slip_rate) + (1 - current_mastery) * guess_rate);
+    ELSE
+        new_mastery := (current_mastery * slip_rate) / 
+                       (current_mastery * slip_rate + (1 - current_mastery) * (1 - guess_rate));
+    END IF;
+    
+    -- Apply learning (transition)
+    new_mastery := new_mastery + (1 - new_mastery) * learn_rate;
+    
+    -- Update skill state
+    UPDATE public.skill_state 
+    SET 
+        opportunity = NEW.opportunity,
+        estimated_mastery = new_mastery,
+        last_updated = NEW.timestamp
+    WHERE user_id = NEW.user_id AND skill_id = NEW.skill_id;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create trigger
+CREATE TRIGGER training_log_skill_update
+    AFTER INSERT ON public.training_log
+    FOR EACH ROW EXECUTE FUNCTION update_skill_state_after_question();
+
+-- Enable RLS on all tables
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.skills ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.questions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.training_log ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.skill_state ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.bkt_model_state ENABLE ROW LEVEL SECURITY;
+
+-- Row Level Security Policies
+CREATE POLICY "Users can view their own profile" ON public.profiles
+    FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert their own profile" ON public.profiles
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own profile" ON public.profiles
+    FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Teachers can view all student profiles" ON public.profiles
+    FOR SELECT USING (
+        EXISTS (
+            SELECT 1 FROM public.profiles
+            WHERE user_id = auth.uid() AND role = 'teacher'
+        )
+    );
+
+CREATE POLICY "Everyone can view skills" ON public.skills
+    FOR SELECT USING (true);
+
+CREATE POLICY "Teachers can manage skills" ON public.skills
+    FOR ALL USING (
+        EXISTS (
+            SELECT 1 FROM public.profiles
+            WHERE user_id = auth.uid() AND role = 'teacher'
+        )
+    );
+
+CREATE POLICY "Everyone can view questions" ON public.questions
+    FOR SELECT USING (true);
+
+CREATE POLICY "Students can view their own training log" ON public.training_log
+    FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Students can insert their own training log" ON public.training_log
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Teachers can view all training logs" ON public.training_log
+    FOR SELECT USING (
+        EXISTS (
+            SELECT 1 FROM public.profiles
+            WHERE user_id = auth.uid() AND role = 'teacher'
+        )
+    );
+
+CREATE POLICY "Students can view their own skill state" ON public.skill_state
+    FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Students can update their own skill state" ON public.skill_state
+    FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "Students can insert their own skill state" ON public.skill_state
+    FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Teachers can view all skill states" ON public.skill_state
+    FOR SELECT USING (
+        EXISTS (
+            SELECT 1 FROM public.profiles
+            WHERE user_id = auth.uid() AND role = 'teacher'
+        )
+    );
+
+-- Insert sample skills
+INSERT INTO public.skills (name, description, difficulty_level) VALUES
+    ('Basic Arithmetic', 'Addition, subtraction, multiplication, division', 'beginner'),
+    ('Algebra Basics', 'Variables, equations, and basic algebraic manipulation', 'intermediate'),
+    ('Geometry Fundamentals', 'Shapes, angles, and basic geometric principles', 'intermediate'),
+    ('Scientific Method', 'Understanding hypothesis, experimentation, and conclusions', 'beginner'),
+    ('Cell Biology', 'Structure and function of cells', 'intermediate'),
+    ('Grammar Basics', 'Parts of speech, sentence structure', 'beginner'),
+    ('Reading Comprehension', 'Understanding and analyzing text', 'intermediate');
+
+-- Insert sample questions mapped to skills
+DO $$
+DECLARE
+    arithmetic_id UUID;
+    algebra_id UUID;
+    grammar_id UUID;
+BEGIN
+    SELECT skill_id INTO arithmetic_id FROM public.skills WHERE name = 'Basic Arithmetic' LIMIT 1;
+    SELECT skill_id INTO algebra_id FROM public.skills WHERE name = 'Algebra Basics' LIMIT 1;
+    SELECT skill_id INTO grammar_id FROM public.skills WHERE name = 'Grammar Basics' LIMIT 1;
+
+    -- Basic Arithmetic questions
+    INSERT INTO public.questions (skill_id, question_text, question_type, options, correct_answer, difficulty, estimated_time_seconds) VALUES
+        (arithmetic_id, 'What is 7 + 5?', 'multiple_choice', ARRAY['10', '12', '11', '13'], '12', 'easy', 30),
+        (arithmetic_id, 'What is 15 - 8?', 'multiple_choice', ARRAY['6', '7', '8', '9'], '7', 'easy', 30),
+        (arithmetic_id, 'What is 6 × 4?', 'multiple_choice', ARRAY['20', '22', '24', '26'], '24', 'medium', 45),
+        (arithmetic_id, 'Is 20 ÷ 4 = 5?', 'true_false', NULL, 'True', 'easy', 20);
+
+    -- Algebra questions
+    INSERT INTO public.questions (skill_id, question_text, question_type, options, correct_answer, difficulty, estimated_time_seconds) VALUES
+        (algebra_id, 'If x + 3 = 8, what is x?', 'short_answer', NULL, '5', 'medium', 60),
+        (algebra_id, 'What is 2x when x = 4?', 'multiple_choice', ARRAY['6', '8', '10', '12'], '8', 'medium', 45);
+
+    -- Grammar questions
+    INSERT INTO public.questions (skill_id, question_text, question_type, options, correct_answer, difficulty, estimated_time_seconds) VALUES
+        (grammar_id, 'Which word is a noun?', 'multiple_choice', ARRAY['quickly', 'run', 'beautiful', 'dog'], 'dog', 'easy', 30),
+        (grammar_id, 'Is "The cat runs quickly" grammatically correct?', 'true_false', NULL, 'True', 'easy', 25);
+END $$;
+
+-- Initialize BKT model state for each skill
+INSERT INTO public.bkt_model_state (skill_id)
+SELECT skill_id FROM public.skills; 
