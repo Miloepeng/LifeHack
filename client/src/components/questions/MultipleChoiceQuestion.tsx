@@ -14,6 +14,7 @@ type Question = {
   correct: number
   difficulty: 'easy' | 'medium' | 'hard'
 }
+
 interface MultipleChoiceQuestionProps {
   question: Question
   onAnswer: (answer: string, isCorrect: boolean) => void

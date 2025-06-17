@@ -649,12 +649,15 @@ const snapshot = { ...currentQuestion };
                 Choose the best answer
               </CardDescription>
             )}
+            {(answeredQuestion ?? currentQuestion).type === 'drag_and_drop' && (
+              <CardDescription className="text-black">
+                Drag and drop the tiles!
+              </CardDescription>
+            )}
           </CardHeader>
           <CardContent className="space-y-4">
             {(answeredQuestion ?? currentQuestion).type === 'drag_and_drop' ? (
               <DragAndDropQuestion
-                question_text={(answeredQuestion ?? currentQuestion).question}
-                difficulty={(answeredQuestion ?? currentQuestion).difficulty}
                 pairs={[
                   { target: 'Piggy Bank A', correct: '$1' },
                   { target: 'Piggy Bank B', correct: '$0.50' },
