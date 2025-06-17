@@ -28,3 +28,7 @@ body {
 .card-title {
   @apply text-black opacity-100;
 }
+
+button:hover {
+  cursor: pointer
+}

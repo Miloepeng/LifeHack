@@ -90,9 +90,9 @@ const mockLearningData = {
   ] as Achievement[],
 
   skillProgress: [
-    { skillId: 'math-money-1', name: 'Math: Decimal Notation', currentLevel: 3, masteryPercentage: 67, questionsAnswered: 23, averageAccuracy: 87, timeSpent: 145, streak: 3, lastStudied: '2024-01-15', difficulty: 'beginner', trend: 'improving' },
-    { skillId: 'math-money-2', name: 'Math: Counting Money', currentLevel: 2, masteryPercentage: 45, questionsAnswered: 15, averageAccuracy: 82, timeSpent: 98, streak: 2, lastStudied: '2024-01-14', difficulty: 'intermediate', trend: 'improving' },
-    { skillId: 'math-money-3', name: 'Math: Money & Real World Problems', currentLevel: 1, masteryPercentage: 23, questionsAnswered: 8, averageAccuracy: 75, timeSpent: 67, streak: 1, lastStudied: '2024-01-13', difficulty: 'beginner', trend: 'stable' }
+    { skillId: 'math-money-1', name: 'Math: Money 1', currentLevel: 3, masteryPercentage: 67, questionsAnswered: 23, averageAccuracy: 87, timeSpent: 145, streak: 3, lastStudied: '2024-01-15', difficulty: 'beginner', trend: 'improving' },
+    { skillId: 'math-money-2', name: 'Math: Money 2', currentLevel: 2, masteryPercentage: 45, questionsAnswered: 15, averageAccuracy: 82, timeSpent: 98, streak: 2, lastStudied: '2024-01-14', difficulty: 'intermediate', trend: 'improving' },
+    { skillId: 'math-money-3', name: 'Math: Money 3', currentLevel: 1, masteryPercentage: 23, questionsAnswered: 8, averageAccuracy: 75, timeSpent: 67, streak: 1, lastStudied: '2024-01-13', difficulty: 'beginner', trend: 'stable' }
   ] as SkillProgress[]
 }
 
@@ -109,7 +109,7 @@ export default function DashboardPage() {
           variant={activeTab === 'overview' ? 'default' : 'ghost'}
           size="sm"
           onClick={() => setActiveTab('overview')}
-          className="card-title"
+          className="card-title hover:bg-gray-200"
         >
           <BookOpen className="h-4 w-4 mr-2" />
           Overview
@@ -118,7 +118,7 @@ export default function DashboardPage() {
           variant={activeTab === 'analytics' ? 'default' : 'ghost'}
           size="sm"
           onClick={() => setActiveTab('analytics')}
-          className="card-title"
+          className="card-title hover:bg-gray-200"
         >
           <BarChart3  className="card-title"/>
           Analytics
@@ -127,7 +127,7 @@ export default function DashboardPage() {
           variant={activeTab === 'achievements' ? 'default' : 'ghost'}
           size="sm"
           onClick={() => setActiveTab('achievements')}
-          className="card-title"
+          className="card-title hover:bg-gray-200"
         >
           <Award className="card-title" />
           Achievements
@@ -207,10 +207,16 @@ export default function DashboardPage() {
                         <div>
                           <span className="font-medium text-black">{skill.name}</span>
                           <div className="flex items-center space-x-2 mt-1">
-                            <Badge variant="outline" className="text-xs">
+                            <Badge variant="outline" className={`text-xs ${
+                              skill.currentLevel === 1 ? 'text-green-500' :
+                              skill.currentLevel === 2 ? 'text-yellow-500' : 'text-red-600'
+                            }`} >
                               Level {skill.currentLevel}
                             </Badge>
-                            <Badge variant="outline" className="text-xs">
+                            <Badge variant="outline" className={`text-xs ${
+                              skill.difficulty === "beginner" ? 'text-green-500' :
+                              skill.difficulty === "intermediate" ? 'text-yellow-500' : 'text-red-600'
+                            }`} >
                               {skill.difficulty}
                             </Badge>
                           </div>
@@ -262,10 +268,13 @@ export default function DashboardPage() {
                       <div className="flex items-center justify-between">
                         <p className="font-medium text-black">{session.date}</p>
                         <div className="flex items-center space-x-2">
-                          <Badge variant="secondary" className="text-xs">
+                          <Badge variant="secondary" className={`text-xs ${
+                              session.accuracy < 0.3 ? 'text-red-600' :
+                              session.accuracy < 0.6 ? 'text-yellow-500' : 'text-green-500'
+                            }`}>
                             {session.accuracy}% accuracy
                           </Badge>
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="outline" className="text-xs text-orange-400">
                             +{session.masteryGained}% mastery
                           </Badge>
                         </div>
@@ -300,20 +309,20 @@ export default function DashboardPage() {
               <div className="flex flex-wrap gap-3">
                 <Button 
                   variant="secondary" 
-                  onClick={() => router.push('/learn/js-fundamentals')}
+                  onClick={() => router.push('/learn/math-money-1')}
                   className="bg-white text-blue-600 hover:bg-blue-50"
                 >
                   <Zap className="h-4 w-4 mr-2" />
-                  Continue JavaScript
+                  Continue Math
                   <ChevronRight className="h-4 w-4 ml-1" />
                 </Button>
                 <Button 
                   variant="outline" 
-                  onClick={() => router.push('/learn/react-components')}
+                  onClick={() => router.push('/learn/math-money-2')}
                   className="border-white text-white hover:bg-white hover:text-blue-600"
                 >
                   <Brain className="h-4 w-4 mr-2" />
-                  Master React
+                  Master Money
                   <ChevronRight className="h-4 w-4 ml-1" />
                 </Button>
               </div>
@@ -596,10 +605,7 @@ export default function DashboardPage() {
             </div>
             <Button
               size="sm"
-              onClick={() => {
-                setRole('student')
-                setActiveTab('analytics')
-                }}
+              onClick={() => router.push(`/learn/${skill.skillId}`)}
               className="bg-red-600 hover:bg-red-700 text-white"
             >
             <Zap className="h-4 w-4 mr-1" />
