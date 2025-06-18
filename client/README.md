@@ -1,8 +1,8 @@
 # AI Learning Platform
 
-A comprehensive AI-powered learning platform built with Next.js, TypeScript, and Supabase. Features role-based authentication for students and teachers, interactive question types, and real-time analytics.
+A comprehensive AI-powered learning platform built with Next.js, TypeScript, and Supabase. Designed to personalise learning for every student while giving teachers the insights they need to guide growth. We built this for the LifeHack Hackathon 2025 with a focus on Primary-level learners and future scalability. 
 
-## 🚀 Features
+## Features
 
 ### For Students
 - **Subject Selection**: Choose from multiple subjects to learn
@@ -10,28 +10,29 @@ A comprehensive AI-powered learning platform built with Next.js, TypeScript, and
   - Multiple Choice
   - True/False  
   - Short Answer
-- **Progress Tracking**: Real-time progress monitoring and accuracy tracking
-- **Personalized Dashboard**: View learning progress across subjects
+- **Progress Tracking**: Real-time progress monitoring with adaptive difficulty
+- **Personalized Dashboard**: Visualise your strengths and areas to improve
 
 ### For Teachers
 - **Class Analytics**: Monitor overall class performance
 - **Student Progress**: Track individual student progress
 - **Subject Performance**: View performance metrics by subject
-- **Real-time Dashboard**: Live updates on student activity
+- **Real-time Dashboard**: Updates instantly with each student attempt
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-- **Frontend**: Next.js 14, React 19, TypeScript
+- **Frontend**: Next.js, React, TypeScript
 - **Styling**: Tailwind CSS, Radix UI
 - **Backend**: Supabase (PostgreSQL, Auth, Real-time)
 - **Authentication**: Supabase Auth with role-based access
 - **Database**: PostgreSQL with Row Level Security
+// We chose Supabase for its real-time support and developer-friendly Postgres layer.
 
-## 📦 Installation
+## Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Miloepeng/LifeHack.git
    cd LifeHack/client
    ```
 
@@ -63,46 +64,42 @@ A comprehensive AI-powered learning platform built with Next.js, TypeScript, and
 
 6. **Open the application**
    
-   Navigate to [http://localhost:3000](http://localhost:3000)
+   Navigate to [http://localhost:3000]
 
-## 🗄️ Database Schema
+## Database Schema
 
 The application uses the following main tables:
 
-- **profiles**: User profiles with role-based access (student/teacher)
-- **subjects**: Learning subjects (Math, Science, English, etc.)
-- **questions**: Questions with multiple types and difficulty levels
-- **student_answers**: Student responses to questions
-- **student_progress**: Aggregated progress tracking per subject
+- **bkt_model_state**: Keeps track of updated parameters, namely Initial Knowledge, Learning Probability, Guess Probability and Slip Probability
+- **skills**: Consists of skills that the web application currently offer
+- **questions**: List of questions that are tagged to the various skills offered
+- **user_profiles**: Keeps track of users and user type (student/teacher roles)
+// Each skill/question pair powers the BKT model to personalise question delivery.
 
-## 🔐 Authentication & Authorization
+## Authentication & Authorization
 
 ### User Roles
 - **Students**: Can view subjects, answer questions, track progress
 - **Teachers**: Can view all student data, analytics, and class performance
 
 ### Security Features
-- Row Level Security (RLS) policies
+- Row Level Security (RLS) policies enforced in Supabase
 - Role-based access control
 - Secure authentication with Supabase Auth
 
-## 🎯 Usage
+## Usage
 
 ### For Students
-1. **Sign Up**: Create an account and select "Student" role
-2. **Login**: Sign in to access your dashboard
-3. **Choose Subject**: Select a subject to start learning
-4. **Answer Questions**: Complete questions and track your progress
-5. **View Progress**: Monitor your accuracy and learning streaks
+1. **Choose Subject**: Select a subject to start learning
+2. **Answer Questions**: Complete questions and track your progress
+3. **View Progress**: Monitor your accuracy and learning streaks
 
 ### For Teachers
-1. **Sign Up**: Create an account and select "Teacher" role
-2. **Login**: Access the teacher dashboard
-3. **Monitor Class**: View class-wide performance metrics
-4. **Track Students**: See individual student progress
-5. **Analyze Performance**: Review subject-wise analytics
+1. **Monitor Class**: View class-wide performance metrics
+2. **Track Students**: See individual student progress
+3. **Analyze Performance**: Review subject-wise analytics
 
-## 📱 Question Types
+## Question Types
 
 ### 1. Multiple Choice
 - 4 answer options
@@ -119,7 +116,7 @@ The application uses the following main tables:
 - Case-insensitive matching
 - Immediate feedback
 
-## 📊 Analytics Features
+## Analytics Features
 
 ### Student Analytics
 - Questions answered per subject
@@ -133,7 +130,7 @@ The application uses the following main tables:
 - Subject performance comparison
 - Recent student activity
 
-## 🚀 Deployment
+## Deployment
 
 ### Vercel Deployment
 1. Connect your GitHub repository to Vercel
@@ -166,10 +163,8 @@ src/
 
 ### Key Files
 - `src/lib/supabase.ts`: Supabase client and type definitions
-- `src/hooks/useAuth.tsx`: Authentication context and hooks
-- `database-schema.sql`: Complete database schema with sample data
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -177,18 +172,19 @@ src/
 4. Test thoroughly
 5. Submit a pull request
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. We have made this project free to use, improve and share.
 
-## 🆘 Support
+## Support
 
 For support and questions:
 - Check the documentation above
 - Review the database schema
 - Ensure environment variables are correctly set
 - Verify Supabase configuration
+- Ask a question on the GitHub Issues Page
 
 ---
 
-Built with ❤️ using Next.js, TypeScript, and Supabase.
+Built using Next.js, TypeScript, and Supabase.
