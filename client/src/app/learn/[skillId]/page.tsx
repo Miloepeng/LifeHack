@@ -247,7 +247,7 @@ const skillQuestions: Record<string, SkillData> = {
       }
     ]
   },
-  'math-money 3': {
+  'math-money-3': {
     name: 'Math: Money & Real World Problems',
     description: 'Now that you are so capable at counting money, lets compare multiple amounts and see some real world examples!',
     questions: [
