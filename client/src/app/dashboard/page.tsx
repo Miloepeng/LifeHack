@@ -572,9 +572,9 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             {[
-              { event: 'New skill "Advanced React" created', time: '1 hour ago' },
-              { event: '15 students completed JavaScript quiz', time: '3 hours ago' },
-              { event: 'Updated CSS Flexbox questions', time: '1 day ago' }
+              { event: 'New skill "Math: Money 3" created', time: '1 hour ago' },
+              { event: '15 students completed Math: Money 1 quiz', time: '3 hours ago' },
+              { event: 'Updated Math: Money 2 questions', time: '1 day ago' }
             ].map((activity, index) => (
               <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
                 <div className="w-2 h-2 bg-green-600 rounded-full mt-2" />
